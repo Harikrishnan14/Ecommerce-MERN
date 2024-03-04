@@ -6,11 +6,13 @@ const PORT = process.env.PORT || 5000
 const authRouter = require('./routes/authRoute')
 const bodyParser = require('body-parser')
 const { errorHandler, notFound } = require('./middlewares/errorHandler')
+const cookieParser = require('cookie-parser')
 
 DBConnect()
 
 app.use(bodyParser.json())
 
+app.use(cookieParser())
 
 app.use('/api/user', authRouter)
 

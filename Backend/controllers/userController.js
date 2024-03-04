@@ -2,6 +2,8 @@ const { generateToken } = require('../config/JWToken')
 const User = require('../models/userModel')
 const asyncHandler = require('express-async-handler')
 const validateMongoID = require('../utils/validateMongoID')
+const { generateRefreshToken } = require('../config/refreshToken')
+const jwt = require('jsonwebtoken')
 
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -19,6 +21,14 @@ const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body
     const findUser = await User.findOne({ email })
     if (findUser && await findUser.isPasswordMatched(password)) {
+        const refreshToken = await generateRefreshToken(findUser?.id)
+        const updateUser = await User.findByIdAndUpdate(findUser.id, {
+            refreshToken: refreshToken
+        }, { new: true })
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            maxAge: 72 * 60 * 60 * 1000
+        })
         res.json({
             _id: findUser?._id,
             firstname: findUser?.firstname,
@@ -31,6 +41,27 @@ const loginUser = asyncHandler(async (req, res) => {
         throw new Error("Invalid Credentials")
     }
 })
+
+
+const handleRefreshToken = asyncHandler(async (req, res) => {
+    const cookie = req.cookies
+    if (!cookie?.refreshToken) {
+        throw new Error("No Refresh Token in Cookies")
+    }
+    const refreshToken = cookie.refreshToken
+    const user = await User.findOne({ refreshToken })
+    if (!user) {
+        throw new Error("Refresh Token not Matched/Not present in DB")
+    }
+    jwt.verify(refreshToken, process.env.JWT_SECRET, (err, decoded) => {
+        if (err || user.id !== decoded.id) {
+            throw new Error("Something wrong with Refresh Token")
+        }
+        const accessToken = generateToken(user?._id)
+        res.json({ accessToken })
+    })
+})
+
 
 const getAllUsers = asyncHandler(async (req, res) => {
     try {
@@ -109,4 +140,4 @@ const unblockUser = asyncHandler(async (req, res) => {
 })
 
 
-module.exports = { registerUser, loginUser, getAllUsers, getUser, deleteUser, updateUser, blockUser, unblockUser }
+module.exports = { registerUser, loginUser, getAllUsers, getUser, deleteUser, updateUser, blockUser, unblockUser, handleRefreshToken }
