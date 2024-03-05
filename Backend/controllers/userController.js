@@ -42,7 +42,6 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 })
 
-
 const handleRefreshToken = asyncHandler(async (req, res) => {
     const cookie = req.cookies
     if (!cookie?.refreshToken) {
@@ -62,6 +61,29 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
     })
 })
 
+const logout = asyncHandler(async (req, res) => {
+    const cookie = req.cookies
+    if (!cookie?.refreshToken) {
+        throw new Error("No Refresh Token in Cookies")
+    }
+    const refreshToken = cookie.refreshToken
+    const user = await User.findOne({ refreshToken })
+    if (!user) {
+        res.clearCookie("refreshToken", {
+            httpOnly: true,
+            secure: true,
+        });
+        return res.sendStatus(204);
+    }
+    await User.findOneAndUpdate({ refreshToken }, {
+        refreshToken: "",
+    });
+    res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: true,
+    });
+    res.sendStatus(204);
+})
 
 const getAllUsers = asyncHandler(async (req, res) => {
     try {
@@ -110,7 +132,6 @@ const updateUser = asyncHandler(async (req, res) => {
     }
 })
 
-
 const blockUser = asyncHandler(async (req, res) => {
     const { id } = req.params
     validateMongoID(id)
@@ -140,4 +161,15 @@ const unblockUser = asyncHandler(async (req, res) => {
 })
 
 
-module.exports = { registerUser, loginUser, getAllUsers, getUser, deleteUser, updateUser, blockUser, unblockUser, handleRefreshToken }
+module.exports = {
+    registerUser,
+    loginUser,
+    getAllUsers,
+    getUser,
+    deleteUser,
+    updateUser,
+    blockUser,
+    unblockUser,
+    handleRefreshToken,
+    logout
+}
