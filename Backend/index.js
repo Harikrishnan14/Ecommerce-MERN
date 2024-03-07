@@ -7,6 +7,7 @@ const authRouter = require('./routes/authRoute')
 const bodyParser = require('body-parser')
 const { errorHandler, notFound } = require('./middlewares/errorHandler')
 const cookieParser = require('cookie-parser')
+const productRouter = require('./routes/productRoute')
 
 DBConnect()
 
@@ -15,6 +16,7 @@ app.use(bodyParser.json())
 app.use(cookieParser())
 
 app.use('/api/user', authRouter)
+app.use('/api/product', productRouter)
 
 
 app.use(errorHandler)
