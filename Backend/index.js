@@ -8,8 +8,11 @@ const bodyParser = require('body-parser')
 const { errorHandler, notFound } = require('./middlewares/errorHandler')
 const cookieParser = require('cookie-parser')
 const productRouter = require('./routes/productRoute')
+const morgan = require('morgan')
 
 DBConnect()
+
+app.use(morgan("dev"))
 
 app.use(bodyParser.json())
 
