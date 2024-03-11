@@ -34,7 +34,15 @@ const getAllProduct = asyncHandler(async (req, res) => {
         let queryStr = JSON.stringify(queryObj)
         queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)
 
-        const query = Product.find(JSON.parse(queryStr))
+        let query = Product.find(JSON.parse(queryStr))
+
+        if (req.query.sort) {
+            const sortBy = req.query.sort.split(',').join(' ')
+            query = query.sort(sortBy)
+        } else {
+            query = query.sort('-createdAt')
+        }
+
         const products = await query
         res.json(products)
     } catch (error) {
