@@ -28,7 +28,7 @@ const getBlog = asyncHandler(async (req, res) => {
     const { id } = req.params
     validateMongoID(id)
     try {
-        const fetchedBlog = await Blog.findById(id)
+        const fetchedBlog = await Blog.findById(id).populate('likes').populate('dislikes')
         await Blog.findByIdAndUpdate(id, { $inc: { numViews: 1 } }, { new: true })
         res.json(fetchedBlog)
     } catch (error) {
@@ -58,8 +58,7 @@ const deleteBlog = asyncHandler(async (req, res) => {
 
 const likeBlog = asyncHandler(async (req, res) => {
     const { blogId } = req.body
-    console.log(blogId);
-    // validateMongoID(blogId)
+    validateMongoID(blogId)
     const blog = await Blog.findById(blogId)
     const loginUserId = req?.user?._id
     const isLiked = blog?.isLiked
@@ -88,5 +87,36 @@ const likeBlog = asyncHandler(async (req, res) => {
     }
 })
 
+const dislikeBlog = asyncHandler(async (req, res) => {
+    const { blogId } = req.body
+    validateMongoID(blogId)
+    const blog = await Blog.findById(blogId)
+    const loginUserId = req?.user?._id
+    const isDisliked = blog?.isDisliked
+    const alreadyLiked = blog?.likes?.find((userId) => userId?.toString() === loginUserId.toString())
 
-module.exports = { createBlog, updateBlog, getBlog, getAllBlogs, deleteBlog, likeBlog }
+    if (alreadyLiked) {
+        const blog = await Blog.findByIdAndUpdate(blogId, {
+            $pull: { likes: loginUserId },
+            isLiked: false
+        }, { new: true })
+        res.json(blog)
+    }
+
+    if (isDisliked) {
+        const blog = await Blog.findByIdAndUpdate(blogId, {
+            $pull: { dislikes: loginUserId },
+            isDisliked: false
+        }, { new: true })
+        res.json(blog)
+    } else {
+        const blog = await Blog.findByIdAndUpdate(blogId, {
+            $push: { dislikes: loginUserId },
+            isDisliked: true
+        }, { new: true })
+        res.json(blog)
+    }
+})
+
+
+module.exports = { createBlog, updateBlog, getBlog, getAllBlogs, deleteBlog, likeBlog, dislikeBlog }
