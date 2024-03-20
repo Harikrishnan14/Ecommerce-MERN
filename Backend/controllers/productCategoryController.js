@@ -14,6 +14,7 @@ const createCategory = asyncHandler(async (req, res) => {
 
 const updateCategory = asyncHandler(async (req, res) => {
     const { id } = req.params
+    validateMongoID(id)
     try {
         const updatedCategory = await Category.findByIdAndUpdate(id, req.body, { new: true })
         res.json(updatedCategory)
@@ -22,5 +23,16 @@ const updateCategory = asyncHandler(async (req, res) => {
     }
 })
 
+const deleteCategory = asyncHandler(async (req, res) => {
+    const { id } = req.params
+    validateMongoID(id)
+    try {
+        const deletedCategory = await Category.findByIdAndDelete(id)
+        res.json(deletedCategory)
+    } catch (error) {
+        throw new Error(error)
+    }
+})
 
-module.exports = { createCategory, updateCategory }
+
+module.exports = { createCategory, updateCategory, deleteCategory }
