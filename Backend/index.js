@@ -10,6 +10,7 @@ const cookieParser = require('cookie-parser')
 const productRouter = require('./routes/productRoute')
 const blogRouter = require('./routes/blogRoute')
 const categoryRouter = require('./routes/productCategoryRoute')
+const blogCategoryRouter = require('./routes/blogCategoryRoute')
 const morgan = require('morgan')
 
 DBConnect()
@@ -24,6 +25,7 @@ app.use('/api/user', authRouter)
 app.use('/api/product', productRouter)
 app.use('/api/blog', blogRouter)
 app.use('/api/category', categoryRouter)
+app.use('/api/blogcategory', blogCategoryRouter)
 
 
 app.use(errorHandler)
