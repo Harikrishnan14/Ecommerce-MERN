@@ -7,11 +7,17 @@ const { createProduct,
     updateProduct,
     deleteProduct,
     addToWishlist,
-    rating
+    rating,
+    uploadImgs
 } = require('../controllers/productController')
+const { uploadImg,
+    productImgResize
+} = require('../middlewares/uploadImagesMiddleware')
+
 
 
 router.post('/', authMiddleware, isAdmin, createProduct)
+router.put('/upload/:id', authMiddleware, isAdmin, uploadImg.array('images', 10), productImgResize, uploadImgs)
 router.get('/:id', getAProduct)
 router.put('/wishlist', authMiddleware, addToWishlist)
 router.put('/rating', authMiddleware, rating)
