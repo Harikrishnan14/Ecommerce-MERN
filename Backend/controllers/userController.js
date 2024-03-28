@@ -1,5 +1,7 @@
 const { generateToken } = require('../config/JWToken')
 const User = require('../models/userModel')
+const Product = require('../models/productsModel')
+const Cart = require('../models/cartModel')
 const asyncHandler = require('express-async-handler')
 const validateMongoID = require('../utils/validateMongoID')
 const { generateRefreshToken } = require('../config/refreshToken')
@@ -268,6 +270,41 @@ const getWishlist = asyncHandler(async (req, res) => {
     }
 })
 
+const userCart = asyncHandler(async (req, res) => {
+    const { cart } = req.body
+    const { _id } = req.user
+    validateMongoID(_id)
+    try {
+        let products = []
+        const user = await User.findById(_id)
+        const alreadyInCart = await Cart.findOne({ orderBy: user._id })
+        if (alreadyInCart) {
+            alreadyInCart.remove()
+        }
+        for (let i = 0; i < cart.length; i++) {
+            let object = {}
+            object.product = cart[i]._id
+            object.count = cart[i].count
+            object.color = cart[i].color
+            let getPrice = await Product.findById(cart[i]._id).select('price').exec()
+            object.price = getPrice.price
+            products.push(object)
+        }
+        let cartTotal = 0
+        for (let i = 0; i < products.length; i++) {
+            cartTotal = cartTotal + products[i].price * products[i].count
+        }
+        let newCart = await new Cart({
+            products,
+            cartTotal,
+            orderBy: user?._id
+        }).save()
+        res.json(newCart)
+    } catch (error) {
+        throw new Error(error)
+    }
+})
+
 
 module.exports = {
     registerUser,
@@ -285,5 +322,6 @@ module.exports = {
     forgotPasswordToken,
     resetPassword,
     getWishlist,
-    saveAddress
+    saveAddress,
+    userCart
 }
