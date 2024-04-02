@@ -34,5 +34,25 @@ const deleteColor = asyncHandler(async (req, res) => {
     }
 })
 
+const getAColor = asyncHandler(async (req, res) => {
+    const { id } = req.params
+    validateMongoID(id)
+    try {
+        const color = await Color.findById(id)
+        res.json(color)
+    } catch (error) {
+        throw new Error(error)
+    }
+})
 
-module.exports = { createColor, updateColor, deleteColor }
+const getAllColors = asyncHandler(async (req, res) => {
+    try {
+        const Colors = await Color.find()
+        res.json(Colors)
+    } catch (error) {
+        throw new Error(error)
+    }
+})
+
+
+module.exports = { createColor, updateColor, deleteColor, getAColor, getAllColors }
