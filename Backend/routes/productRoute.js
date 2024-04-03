@@ -8,7 +8,8 @@ const { createProduct,
     deleteProduct,
     addToWishlist,
     rating,
-    uploadImgs
+    uploadImgs,
+    deleteImgs
 } = require('../controllers/productController')
 const { uploadImg,
     productImgResize
@@ -17,13 +18,14 @@ const { uploadImg,
 
 
 router.post('/', authMiddleware, isAdmin, createProduct)
-router.put('/upload/:id', authMiddleware, isAdmin, uploadImg.array('images', 10), productImgResize, uploadImgs)
+router.put('/upload', authMiddleware, isAdmin, uploadImg.array('images', 10), productImgResize, uploadImgs)
 router.get('/:id', getAProduct)
 router.put('/wishlist', authMiddleware, addToWishlist)
 router.put('/rating', authMiddleware, rating)
 router.get('/', getAllProduct)
 router.put('/:id', authMiddleware, isAdmin, updateProduct)
 router.delete('/:id', authMiddleware, isAdmin, deleteProduct)
+router.delete('/delete-img/:id', authMiddleware, isAdmin, deleteImgs)
 
 
 module.exports = router
