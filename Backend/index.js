@@ -14,6 +14,7 @@ const blogCategoryRouter = require('./routes/blogCategoryRoute')
 const brandRouter = require('./routes/brandRoute')
 const couponRouter = require('./routes/couponRoute')
 const colorRouter = require('./routes/colorRoute')
+const enquiryRouter = require('./routes/enqRoute')
 const morgan = require('morgan')
 
 DBConnect()
@@ -32,6 +33,7 @@ app.use('/api/blogcategory', blogCategoryRouter)
 app.use('/api/brand', brandRouter)
 app.use('/api/coupon', couponRouter)
 app.use('/api/color', colorRouter)
+app.use('/api/enquiry', enquiryRouter)
 
 
 app.use(errorHandler)
