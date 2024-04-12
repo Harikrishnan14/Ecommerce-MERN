@@ -204,6 +204,23 @@ const Home = () => {
                     </div>
                 </div>
             </section>
+            <section className="popular-wrapper home-wrapper-2 py-5">
+                <div className="container-xxl">
+                    <div className="row">
+                        <div className="col-12">
+                            <h3 className="section-heading">
+                                Our Popular Products
+                            </h3>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <ProductCard />
+                        <ProductCard />
+                        <ProductCard />
+                        <ProductCard />
+                    </div>
+                </div>
+            </section>
             <section className="marquee-wrapper home-wrapper-2 py-5">
                 <div className="container-xxl">
                     <div className="row">
