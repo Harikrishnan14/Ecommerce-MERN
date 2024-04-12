@@ -231,6 +231,7 @@ footer .input-group-text {
     background-color: white;
     box-shadow: 0 0 10px #0000001a;
     padding: 15px;
+    border-radius: 10px;
 }
 
 .categories>div {
@@ -305,6 +306,7 @@ footer .input-group-text {
     background-color: white;
     border-radius: 10px;
     overflow: hidden;
+    box-shadow: 0 0 10px #0000001a;
 }
 
 .product-card .product-image {
@@ -365,4 +367,46 @@ footer .input-group-text {
     padding: 20px 10px;
     border-radius: 10px;
     background-color: white;
+    box-shadow: 0 0 10px #0000001a;
+}
+
+
+
+/* Famous card */
+
+.famous-card {
+    box-shadow: 0 0 10px #0000001a;
+}
+
+.famous-card .famous-content {
+    top: 8%;
+    left: 8%;
+}
+
+.famous-card img {
+    border-radius: 10px;
+}
+
+.famous-content h5 {
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 400;
+    color: white;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.famous-content h6 {
+    font-size: 23px;
+    line-height: 26px;
+    font-weight: 500;
+    color: white;
+    margin-bottom: 8px;
+}
+
+.famous-content p {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 100;
+    color: white;
 }
