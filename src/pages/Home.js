@@ -4,10 +4,12 @@ import Marquee from "react-fast-marquee";
 import BlogCard from '../components/BlogCard';
 import ProductCard from '../components/ProductCard';
 import SpecialProduct from '../components/SpecialProduct';
+import MetaTags from '../components/MetaTags';
 
 const Home = () => {
     return (
         <>
+            <MetaTags title="ShopNest" />
             <section className="home-wrapper-1 py-5">
                 <div className="container-xxl">
                     <div className="row">
@@ -312,10 +314,20 @@ const Home = () => {
                                 Our Latest Blogs
                             </h3>
                         </div>
-                        <BlogCard />
-                        <BlogCard />
-                        <BlogCard />
-                        <BlogCard />
+                        <div className="row">
+                            <div className="col-3">
+                                <BlogCard />
+                            </div>
+                            <div className="col-3">
+                                <BlogCard />
+                            </div>
+                            <div className="col-3">
+                                <BlogCard />
+                            </div>
+                            <div className="col-3">
+                                <BlogCard />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>

@@ -63,6 +63,7 @@ a {
     background-color: white;
     box-shadow: 0 0 10px #0000001a;
     padding: 15px;
+    border-radius: 10px;
 }
 
 .section-heading {
@@ -266,6 +267,7 @@ footer .input-group-text {
 .blog-card {
     background-color: white;
     border-radius: 10px;
+    box-shadow: 0 0 10px #0000001a
 }
 
 .blog-card img {
