@@ -23,10 +23,11 @@ const Login = () => {
                                     </div>
                                     <div>
                                         <Link to='/forgot-password'>Forgot Password?</Link>
-                                    </div>
-                                    <div className='d-flex justify-content-center align-items-center gap-15 mt-3'>
-                                        <button className='button border-0'>Login</button>
-                                        <Link to='/' className='button signup'>Sign Up</Link>
+
+                                        <div className='d-flex justify-content-center align-items-center gap-15 mt-3'>
+                                            <button className='button border-0'>Login</button>
+                                            <Link to='/signup' className='button signup'>Sign Up</Link>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
