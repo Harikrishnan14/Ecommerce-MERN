@@ -24,7 +24,7 @@ const SignUp = () => {
                                     <div>
                                         <input type="tel" name="phone" placeholder="Phone Number" className="form-control" />
                                     </div>
-                                    <div className='mt-2'>
+                                    <div>
                                         <input type="password" name="password" placeholder="Password" className="form-control" />
                                     </div>
                                     <div>
