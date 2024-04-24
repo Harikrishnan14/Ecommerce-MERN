@@ -3,10 +3,18 @@ import MetaTags from '../components/MetaTags'
 import BreadCrumb from '../components/BreadCrumb'
 import ProductCard from '../components/ProductCard';
 import ReactStars from "react-rating-stars-component";
+import ReactImageZoom from 'react-image-zoom';
 
 const SingleProduct = () => {
 
-    const [orderedProduct, setOrderedProduct] = useState(true)
+    const [orderedProduct, setOrderedProduct] = useState(true);
+
+    const props = {
+        width: 400,
+        height: 500,
+        zoomWidth: 500,
+        img: "https://media.wired.com/photos/6511aab1189c419c40374c92/1:1/w_1358,h_1358,c_limit/Apple-Watch-Ultra-2-Alt-Gear.jpg"
+    };
 
     return (
         <div>
@@ -15,7 +23,27 @@ const SingleProduct = () => {
             <div className="main-product-wrapper home-wrapper-2 py-5">
                 <div className="container-xxl">
                     <div className="row">
-                        <div className="col-6"></div>
+                        <div className="col-6">
+                            <div className="main-product-image">
+                                <div>
+                                    <ReactImageZoom {...props} />
+                                </div>
+                            </div>
+                            <div className="other-product-images d-flex flex-wrap gap-15">
+                                <div>
+                                    <img src="https://media.wired.com/photos/6511aab1189c419c40374c92/1:1/w_1358,h_1358,c_limit/Apple-Watch-Ultra-2-Alt-Gear.jpg" alt="" className='img-fluid' />
+                                </div>
+                                <div>
+                                    <img src="https://media.wired.com/photos/6511aab1189c419c40374c92/1:1/w_1358,h_1358,c_limit/Apple-Watch-Ultra-2-Alt-Gear.jpg" alt="" className='img-fluid' />
+                                </div>
+                                <div>
+                                    <img src="https://media.wired.com/photos/6511aab1189c419c40374c92/1:1/w_1358,h_1358,c_limit/Apple-Watch-Ultra-2-Alt-Gear.jpg" alt="" className='img-fluid' />
+                                </div>
+                                <div>
+                                    <img src="https://media.wired.com/photos/6511aab1189c419c40374c92/1:1/w_1358,h_1358,c_limit/Apple-Watch-Ultra-2-Alt-Gear.jpg" alt="" className='img-fluid' />
+                                </div>
+                            </div>
+                        </div>
                         <div className="col-6"></div>
                     </div>
                 </div>
