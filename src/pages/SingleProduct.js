@@ -7,6 +7,7 @@ import ReactImageZoom from 'react-image-zoom';
 import Color from '../components/Color'
 import { IoShuffle } from "react-icons/io5";
 import { AiOutlineHeart } from "react-icons/ai";
+import { IoIosLink } from "react-icons/io";
 
 const SingleProduct = () => {
 
@@ -18,6 +19,16 @@ const SingleProduct = () => {
         zoomWidth: 600,
         img: "https://media.wired.com/photos/6511aab1189c419c40374c92/1:1/w_1358,h_1358,c_limit/Apple-Watch-Ultra-2-Alt-Gear.jpg"
     };
+
+    const copyToClipboard = (text) => {
+        console.log('text', text)
+        var textField = document.createElement('textarea')
+        textField.innerText = text
+        document.body.appendChild(textField)
+        textField.select()
+        document.execCommand('copy')
+        textField.remove()
+    }
 
     return (
         <div>
@@ -105,13 +116,23 @@ const SingleProduct = () => {
                                             <button className='button signup border-0'>Buy Now</button>
                                         </div>
                                     </div>
-                                    <div className="d-flex align-items-center gap-30">
+                                    <div className="d-flex align-items-center gap-30 pb-3">
                                         <div>
                                             <a href=""><IoShuffle className='fs-5 me-2' /> Add to Compare</a>
                                         </div>
                                         <div>
                                             <a href=""><AiOutlineHeart className='fs-5 me-2' /> Add to Wishlist</a>
                                         </div>
+                                    </div>
+                                    <div className="d-flex flex-column gap-10 mt-5 mb-3">
+                                        <h3 className='product-heading'>Shipping & Returns :</h3>
+                                        <p className='product-data'>Free shipping and returns available on all orders! <br />
+                                            We ship all US domestic orders within <br /> 5-10 business days!</p>
+                                    </div>
+                                    <div className="d-flex align-items-center gap-15 my-3">
+                                        <a href="javascript:void(0)" onClick={() => copyToClipboard("https://media.wired.com/photos/6511aab1189c419c40374c92/1:1/w_1358,h_1358,c_limit/Apple-Watch-Ultra-2-Alt-Gear.jpg")} style={{ backgroundColor: "#c6c6c6", color: "white", padding: "8px", borderRadius: "10px" }} >
+                                            <IoIosLink className='fs-6 me-1' />Copy Link
+                                        </a>
                                     </div>
                                 </div>
                             </div>
