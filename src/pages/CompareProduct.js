@@ -2,6 +2,8 @@ import React from 'react'
 import MetaTags from '../components/MetaTags'
 import BreadCrumb from '../components/BreadCrumb'
 import Color from '../components/Color'
+import Cross from '../images/cross.svg'
+import Watch from '../images/watch.jpg'
 
 const CompareProduct = () => {
     return (
@@ -11,11 +13,11 @@ const CompareProduct = () => {
             <div className="compare-product-wrapper home-wrapper-2 py-5">
                 <div className="container-xxl">
                     <div className="row">
-                    <div className="col-3">
+                        <div className="col-3">
                             <div className="compare-product-card position-relative">
-                                <img src="images/cross.svg" alt="cross" className="position-absolute cross img-fluid" />
+                                <img src={Cross} alt="cross" className="position-absolute cross img-fluid" />
                                 <div className="product-card-img">
-                                    <img src="images/watch.jpg" alt="watch" />
+                                    <img src={Watch} alt="watch" />
                                 </div>
                                 <div className="compare-product-details">
                                     <h5 className="title">Lorem ipsum dolor sit, amet consectetur</h5>
@@ -50,9 +52,9 @@ const CompareProduct = () => {
                         </div>
                         <div className="col-3">
                             <div className="compare-product-card position-relative">
-                                <img src="images/cross.svg" alt="cross" className="position-absolute cross img-fluid" />
+                                <img src={Cross} alt="cross" className="position-absolute cross img-fluid" />
                                 <div className="product-card-img">
-                                    <img src="images/watch.jpg" alt="watch" />
+                                    <img src={Watch} alt="watch" />
                                 </div>
                                 <div className="compare-product-details">
                                     <h5 className="title">Lorem ipsum dolor sit, amet consectetur</h5>

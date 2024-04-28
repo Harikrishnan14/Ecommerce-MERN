@@ -1,6 +1,8 @@
 import React from 'react'
 import MetaTags from '../components/MetaTags'
 import BreadCrumb from '../components/BreadCrumb'
+import Cross from '../images/cross.svg'
+import Watch from '../images/watch.jpg'
 
 const Wishlist = () => {
     return (
@@ -12,9 +14,9 @@ const Wishlist = () => {
                     <div className="row">
                         <div className="col-3 mb-3">
                             <div className="wishlist-card position-relative">
-                                <img src="images/cross.svg" alt="cross" className="position-absolute cross img-fluid" />
+                                <img src={Cross} alt="cross" className="position-absolute cross img-fluid" />
                                 <div className="wishlist-card-img">
-                                    <img src="images/watch.jpg" alt="" className='img-fluid w-100' />
+                                    <img src={Watch} alt="" className='img-fluid w-100' />
                                 </div>
                                 <div className="p-3">
                                     <h5 className="title mb-3">Lorem ipsum dolor sit, amet consectetur</h5>
@@ -24,9 +26,9 @@ const Wishlist = () => {
                         </div>
                         <div className="col-3 mb-3">
                             <div className="wishlist-card position-relative">
-                                <img src="images/cross.svg" alt="cross" className="position-absolute cross img-fluid" />
+                                <img src={Cross} alt="cross" className="position-absolute cross img-fluid" />
                                 <div className="wishlist-card-img">
-                                    <img src="images/watch.jpg" alt="" className='img-fluid w-100' />
+                                    <img src={Watch} alt="" className='img-fluid w-100' />
                                 </div>
                                 <div className="p-3">
                                     <h5 className="title mb-3">Lorem ipsum dolor sit, amet consectetur</h5>
@@ -36,9 +38,9 @@ const Wishlist = () => {
                         </div>
                         <div className="col-3 mb-3">
                             <div className="wishlist-card position-relative">
-                                <img src="images/cross.svg" alt="cross" className="position-absolute cross img-fluid" />
+                                <img src={Cross} alt="cross" className="position-absolute cross img-fluid" />
                                 <div className="wishlist-card-img">
-                                    <img src="images/watch.jpg" alt="" className='img-fluid w-100' />
+                                    <img src={Watch} alt="" className='img-fluid w-100' />
                                 </div>
                                 <div className="p-3">
                                     <h5 className="title mb-3">Lorem ipsum dolor sit, amet consectetur</h5>

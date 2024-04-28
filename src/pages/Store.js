@@ -4,6 +4,11 @@ import MetaTags from '../components/MetaTags'
 import ReactStars from "react-rating-stars-component";
 import ProductCard from '../components/ProductCard';
 import Color from '../components/Color';
+import Headphone from '../images/headphone.jpg'
+import Grid from '../images/gr.svg'
+import Grid2 from '../images/gr2.svg'
+import Grid3 from '../images/gr3.svg'
+import Grid4 from '../images/gr4.svg'
 
 const Store = () => {
 
@@ -113,7 +118,7 @@ const Store = () => {
                                 <div>
                                     <div className="random-products d-flex">
                                         <div className="w-50">
-                                            <img src="images/headphone.jpg" alt="watch" className='img-fluid' />
+                                            <img src={Headphone} alt="Headphone" className='img-fluid' />
                                         </div>
                                         <div className="w-50">
                                             <h5>Kids headphones bulk 10 pack multi colored for students</h5>
@@ -123,7 +128,7 @@ const Store = () => {
                                     </div>
                                     <div className="random-products d-flex">
                                         <div className="w-50">
-                                            <img src="images/headphone.jpg" alt="watch" className='img-fluid' />
+                                            <img src={Headphone} alt="Headphone" className='img-fluid' />
                                         </div>
                                         <div className="w-50">
                                             <h5>Kids headphones bulk 10 pack multi colored for students</h5>
@@ -133,7 +138,7 @@ const Store = () => {
                                     </div>
                                     <div className="random-products d-flex">
                                         <div className="w-50">
-                                            <img src="images/headphone.jpg" alt="watch" className='img-fluid' />
+                                            <img src={Headphone} alt="Headphone" className='img-fluid' />
                                         </div>
                                         <div className="w-50">
                                             <h5>Kids headphones bulk 10 pack multi colored for students</h5>
@@ -163,10 +168,10 @@ const Store = () => {
                                     <div className='d-flex align-items-center gap-10'>
                                         <p className="total-products mb-0">21 Products</p>
                                         <div className="d-flex align-items-center gap-10 grid">
-                                            <img src="images/gr.svg" alt="grid" className="d-block img-fluid" onClick={() => setGrid(3)} />
-                                            <img src="images/gr2.svg" alt="grid" className="d-block img-fluid" onClick={() => setGrid(4)} />
-                                            <img src="images/gr3.svg" alt="grid" className="d-block img-fluid" onClick={() => setGrid(6)} />
-                                            <img src="images/gr4.svg" alt="grid" className="d-block img-fluid" onClick={() => setGrid(12)} />
+                                            <img src={Grid} alt="grid" className="d-block img-fluid" onClick={() => setGrid(3)} />
+                                            <img src={Grid2} alt="grid" className="d-block img-fluid" onClick={() => setGrid(4)} />
+                                            <img src={Grid3} alt="grid" className="d-block img-fluid" onClick={() => setGrid(6)} />
+                                            <img src={Grid4} alt="grid" className="d-block img-fluid" onClick={() => setGrid(12)} />
                                         </div>
                                     </div>
                                 </div>
