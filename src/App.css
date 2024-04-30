@@ -951,3 +951,17 @@ footer .input-group-text {
     font-size: 14px;
     color: var(--color-1c1b1b);
 }
+
+
+
+/* Checkout page */
+
+.total {
+    font-size: 14px;
+    color: var(--color-1c1b1b);
+}
+
+.total-price {
+    font-size: 16px;
+    color: var(--color-777777);
+}
