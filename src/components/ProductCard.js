@@ -57,15 +57,15 @@ const ProductCard = (props) => {
                 </Link>
             </div>
             {/* <div className={`${location.pathname === "/store" ? `gr-${grid}` : "col-3"}`}>
-                <Link className="product-card position-relative">
+                <Link to='/product/:id' className="product-card position-relative">
                     <div className="wishlist-icon position-absolute">
-                        <Link>
-                            <img src="images/wish.svg" alt="wishlist" />
-                        </Link>
+                        <button className='border-0 bg-transparent'>
+                            <img src={Wish} alt="wishlist" />
+                        </button>
                     </div>
                     <div className="product-image">
-                        <img src="images/watch.jpg" className='img-fluid' alt="product" />
-                        <img src="images/watch2.avif" className='img-fluid' alt="product" />
+                        <img src={Watch} className='img-fluid' alt="product" />
+                        <img src={Watch2} className='img-fluid' alt="product" />
                     </div>
                     <div className="product-details">
                         <h6 className="brand">
@@ -84,15 +84,15 @@ const ProductCard = (props) => {
                     </div>
                     <div className="action-bar position-absolute">
                         <div className="d-flex flex-column gap-15">
-                            <Link>
-                                <img src="images/prodcompare.svg" alt="compare" />
-                            </Link>
-                            <Link>
-                                <img src="images/view.svg" alt="view" />
-                            </Link>
-                            <Link>
-                                <img src="images/add-cart.svg" alt="add-to-cart" />
-                            </Link>
+                            <button className='border-0 bg-transparent'>
+                                <img src={ProdCompare} alt="compare" />
+                            </button>
+                            <button className='border-0 bg-transparent'>
+                                <img src={View} alt="view" />
+                            </button>
+                            <button className='border-0 bg-transparent'>
+                                <img src={AddToCart} alt="add-to-cart" />
+                            </button>
                         </div>
                     </div>
                 </Link>
