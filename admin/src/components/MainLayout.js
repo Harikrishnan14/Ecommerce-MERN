@@ -1,13 +1,27 @@
 import React, { useState } from 'react';
 import {
     MenuFoldOutlined,
-    MenuUnfoldOutlined,
-    UploadOutlined,
-    UserOutlined,
-    VideoCameraOutlined,
+    MenuUnfoldOutlined
 } from '@ant-design/icons';
 import { Button, Layout, Menu, theme } from 'antd';
+import {
+    AiOutlineBook,
+    AiOutlineDashboard,
+    AiOutlineShoppingCart,
+    AiOutlineUnorderedList,
+    AiOutlineUser,
+    AiOutlineBgColors,
+    AiOutlinePlusCircle,
+    AiOutlinePlusSquare,
+    AiOutlineQuestionCircle
+} from "react-icons/ai";
+import { SiBrandfolder } from "react-icons/si";
+import { BiCategoryAlt } from "react-icons/bi";
+import { LuClipboardCheck } from "react-icons/lu";
+import { RiBloggerLine } from "react-icons/ri";
+import { useNavigate } from 'react-router-dom';
 const { Header, Sider, Content } = Layout;
+
 
 const MainLayout = () => {
 
@@ -16,29 +30,121 @@ const MainLayout = () => {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
 
+    const navigate = useNavigate()
+
     return (
         <Layout>
             <Sider trigger={null} collapsible collapsed={collapsed}>
-                <div className="demo-logo-vertical" />
+                <div className="logo">
+                    <h2 className='text-white fs-5 text-center py-3 mb-0'>
+                        <span className='sm-logo'>SN</span>
+                        <span className='lg-logo'>ShopNest</span>
+                    </h2>
+                </div>
                 <Menu
                     theme="dark"
                     mode="inline"
-                    defaultSelectedKeys={['1']}
+                    defaultSelectedKeys={['']}
+                    onClick={({ key }) => {
+                        if (key === 'signout') {
+                        } else {
+                            navigate(key)
+                        }
+                    }}
                     items={[
                         {
-                            key: '1',
-                            icon: <UserOutlined />,
-                            label: 'nav 1',
+                            key: '',
+                            icon: <AiOutlineDashboard className='fs-5' />,
+                            label: 'Dashboard',
                         },
                         {
-                            key: '2',
-                            icon: <VideoCameraOutlined />,
-                            label: 'nav 2',
+                            key: 'customers',
+                            icon: <AiOutlineUser className='fs-5' />,
+                            label: 'Customers',
                         },
                         {
-                            key: '3',
-                            icon: <UploadOutlined />,
-                            label: 'nav 3',
+                            key: 'catalog',
+                            icon: <AiOutlineBook className='fs-5' />,
+                            label: 'Catalog',
+                            children: [
+                                {
+                                    key: 'product',
+                                    icon: <AiOutlineShoppingCart className='fs-5' />,
+                                    label: 'Add Product',
+                                },
+                                {
+                                    key: 'product-list',
+                                    icon: <AiOutlineUnorderedList className='fs-5' />,
+                                    label: 'Product List',
+                                },
+                                {
+                                    key: 'brand',
+                                    icon: <SiBrandfolder className='fs-5' />,
+                                    label: 'Brand',
+                                },
+                                {
+                                    key: 'brand-list',
+                                    icon: <AiOutlineUnorderedList className='fs-5' />,
+                                    label: 'Brand List',
+                                },
+                                {
+                                    key: 'category',
+                                    icon: <BiCategoryAlt className='fs-5' />,
+                                    label: 'Category',
+                                },
+                                {
+                                    key: 'category-list',
+                                    icon: <AiOutlineUnorderedList className='fs-5' />,
+                                    label: 'Category List',
+                                },
+                                {
+                                    key: 'color',
+                                    icon: <AiOutlineBgColors className='fs-5' />,
+                                    label: 'Color',
+                                },
+                                {
+                                    key: 'color-list',
+                                    icon: <AiOutlineUnorderedList className='fs-5' />,
+                                    label: 'Color List',
+                                },
+                            ]
+                        },
+                        {
+                            key: 'orders',
+                            icon: <LuClipboardCheck className='fs-5' />,
+                            label: 'Orders',
+                        },
+                        {
+                            key: 'blogs',
+                            icon: <RiBloggerLine className='fs-5' />,
+                            label: 'Blogs',
+                            children: [
+                                {
+                                    key: 'blog',
+                                    icon: <AiOutlinePlusCircle className='fs-5' />,
+                                    label: 'Add Blog'
+                                },
+                                {
+                                    key: 'blog-list',
+                                    icon: <AiOutlineUnorderedList className='fs-5' />,
+                                    label: 'Blog List'
+                                },
+                                {
+                                    key: 'blog-category',
+                                    icon: <AiOutlinePlusSquare className='fs-5' />,
+                                    label: 'Add Blog Category'
+                                },
+                                {
+                                    key: 'blog-category-list',
+                                    icon: <AiOutlineUnorderedList className='fs-5' />,
+                                    label: 'Blog Category List'
+                                },
+                            ]
+                        },
+                        {
+                            key: 'enquiries',
+                            icon: <AiOutlineQuestionCircle className='fs-5' />,
+                            label: 'Enquiries',
                         },
                     ]}
                 />
