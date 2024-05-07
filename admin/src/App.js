@@ -19,7 +19,7 @@ function App() {
         <Route path='/forgot-password' element={<ResetPassword />} />
         <Route path='/reset-password' element={<ForgotPassword />} />
         <Route path='/admin' element={<MainLayout />} >
-          <Route index element={Dashboard}/>
+          <Route index element={<Dashboard />} />
         </Route>
       </Routes>
     </Router>
