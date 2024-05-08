@@ -77,4 +77,5 @@ body {
 
 main {
   overflow-y: scroll;
+  background: transparent !important;
 }
