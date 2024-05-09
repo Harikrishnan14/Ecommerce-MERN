@@ -76,6 +76,11 @@ body {
 }
 
 main {
+  height: 85vh;
   overflow-y: scroll;
   background: transparent !important;
+}
+
+main::-webkit-scrollbar {
+  width: 0px;
 }
