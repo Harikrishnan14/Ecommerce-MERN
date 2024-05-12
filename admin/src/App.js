@@ -10,6 +10,7 @@ import ForgotPassword from './pages/ResetPassword'
 import MainLayout from './components/MainLayout'
 import Dashboard from './pages/Dashboard'
 import Enquiries from './pages/Enquiries';
+import BlogList from './pages/BlogList';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path='/admin' element={<MainLayout />} >
           <Route index element={<Dashboard />} />
           <Route path='enquiries' element={<Enquiries />} />
+          <Route path='blog-list' element={<BlogList />} />
         </Route>
       </Routes>
     </Router>
