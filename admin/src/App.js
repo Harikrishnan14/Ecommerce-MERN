@@ -11,6 +11,7 @@ import MainLayout from './components/MainLayout'
 import Dashboard from './pages/Dashboard'
 import Enquiries from './pages/Enquiries';
 import BlogList from './pages/BlogList';
+import BlogCategoryList from './pages/BlogCategoryList';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route index element={<Dashboard />} />
           <Route path='enquiries' element={<Enquiries />} />
           <Route path='blog-list' element={<BlogList />} />
+          <Route path='blog-category-list' element={<BlogCategoryList />} />
         </Route>
       </Routes>
     </Router>
