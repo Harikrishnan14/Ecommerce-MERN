@@ -12,6 +12,8 @@ import Dashboard from './pages/Dashboard'
 import Enquiries from './pages/Enquiries';
 import BlogList from './pages/BlogList';
 import BlogCategoryList from './pages/BlogCategoryList';
+import Orders from './pages/Orders';
+import Customers from './pages/Customers';
 
 
 function App() {
@@ -26,6 +28,8 @@ function App() {
           <Route path='enquiries' element={<Enquiries />} />
           <Route path='blog-list' element={<BlogList />} />
           <Route path='blog-category-list' element={<BlogCategoryList />} />
+          <Route path='orders' element={<Orders />} />
+          <Route path='customers' element={<Customers />} />
         </Route>
       </Routes>
     </Router>
