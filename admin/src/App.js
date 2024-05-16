@@ -18,6 +18,8 @@ import ColorList from './pages/ColorList';
 import CategoryList from './pages/CategoryList';
 import BrandList from './pages/BrandList';
 import ProductList from './pages/ProductList';
+import AddBlog from './pages/AddBlog';
+import AddBlogCategory from './pages/AddBlogCategory';
 
 
 function App() {
@@ -30,7 +32,9 @@ function App() {
         <Route path='/admin' element={<MainLayout />} >
           <Route index element={<Dashboard />} />
           <Route path='enquiries' element={<Enquiries />} />
+          <Route path='blog' element={<AddBlog />} />
           <Route path='blog-list' element={<BlogList />} />
+          <Route path='blog-category' element={<AddBlogCategory />} />
           <Route path='blog-category-list' element={<BlogCategoryList />} />
           <Route path='orders' element={<Orders />} />
           <Route path='customers' element={<Customers />} />
