@@ -23,6 +23,7 @@ import AddBlogCategory from './pages/AddBlogCategory';
 import AddColor from './pages/AddColor';
 import AddCategory from './pages/AddCategory';
 import AddBrand from './pages/AddBrand';
+import AddProduct from './pages/AddProduct';
 
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
           <Route path='category-list' element={<CategoryList />} />
           <Route path='brand' element={<AddBrand />} />
           <Route path='brand-list' element={<BrandList />} />
+          <Route path='product' element={<AddProduct />} />
           <Route path='product-list' element={<ProductList />} />
         </Route>
       </Routes>
