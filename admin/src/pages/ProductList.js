@@ -1,5 +1,6 @@
 import { Table } from 'antd';
-import React from 'react'
+import React from 'react';
+import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 
 const ProductList = () => {
 
