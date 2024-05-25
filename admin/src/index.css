@@ -75,6 +75,11 @@ body {
   right: -6px;
 }
 
+.error {
+  color: red;
+  font-size: 12px;
+}
+
 main {
   height: 85vh;
   overflow-y: scroll;

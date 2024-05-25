@@ -3,8 +3,11 @@ import { baseURL } from "../../utils/baseURL";
 
 
 const login = async (userData) => {
-    const response = axios.post(`${baseURL}user/admin-login`, userData);
-    console.log(response);
+    const response = await axios.post(`${baseURL}user/admin-login`, userData);
+    if (response.data) {
+        localStorage.setItem("user", JSON.stringify(response.data))
+    }
+    return response.data;
 }
 
 
