@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import CustomInput from '../components/CustomInput'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,6 +9,8 @@ import { login } from '../features/auth/authSlice'
 const Login = () => {
 
     const dispatch = useDispatch()
+
+    const navigate = useNavigate()
 
     let schema = Yup.object({
         email: Yup.string().email("Email should be valid").required("Email is Required"),
@@ -26,6 +28,16 @@ const Login = () => {
             alert(JSON.stringify(values, null, 2));
         },
     });
+
+    const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth)
+
+    useEffect(() => {
+        if (user || isSuccess) {
+            navigate("admin")
+        } else {
+            alert("Invalid Credentials")
+        }
+    }, [user, isLoading, isError, isSuccess, message])
 
     return (
         <div className='py-5' style={{ background: "#ffd333", minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
