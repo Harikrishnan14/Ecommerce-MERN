@@ -29,13 +29,14 @@ const Login = () => {
         },
     });
 
-    const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth)
+    const authState = useSelector((state) => state)
+    const { user, isLoading, isError, isSuccess, message } = authState.auth
 
     useEffect(() => {
-        if (user || isSuccess) {
+        if (isSuccess) {
             navigate("admin")
         } else {
-            alert("Invalid Credentials")
+            navigate("")
         }
     }, [user, isLoading, isError, isSuccess, message])
 
@@ -44,6 +45,9 @@ const Login = () => {
             <div className='my-5 w-25 bg-white rounded-3 mx-auto p-4'>
                 <h3 className='text-center title'>Login</h3>
                 <p className='text-center'>Login to you account to continue</p>
+                <div className="error tet-center">
+                    {message.message === "Rejected" ? "You are not an Admin" : ""}
+                </div>
                 <form action="" onSubmit={formik.handleSubmit}>
                     <CustomInput type='text' name="email" val={formik.values.email} label='Email Address' i_id='email' onChange={formik.handleChange('email')} />
                     <div className="error">
