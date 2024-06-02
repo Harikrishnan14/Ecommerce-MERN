@@ -19,6 +19,7 @@ const Dashboard = () => {
         { type: 'Nov', sales: 38 },
         { type: 'Dec', sales: 38 },
     ];
+
     const config = {
         data,
         xField: 'type',
@@ -69,6 +70,7 @@ const Dashboard = () => {
             dataIndex: 'status',
         },
     ];
+    
     const data1 = [];
     for (let i = 0; i < 46; i++) {
         data1.push({

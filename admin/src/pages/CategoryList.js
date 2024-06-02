@@ -30,6 +30,7 @@ const CategoryList = () => {
             dataIndex: 'action',
         },
     ];
+    
     const data1 = [];
     for (let i = 0; i < pCategoryState.length; i++) {
         data1.push({

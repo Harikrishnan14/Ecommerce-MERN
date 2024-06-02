@@ -21,6 +21,7 @@ const Enquiries = () => {
             dataIndex: 'status',
         },
     ];
+    
     const data1 = [];
     for (let i = 0; i < 46; i++) {
         data1.push({

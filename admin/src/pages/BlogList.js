@@ -33,6 +33,7 @@ const BlogList = () => {
             dataIndex: 'action',
         },
     ];
+    
     const data1 = [];
     for (let i = 0; i < blogState.length; i++) {
         data1.push({
