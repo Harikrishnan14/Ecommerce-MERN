@@ -13,7 +13,7 @@ const BlogList = () => {
         dispatch(getBlogs())
     }, []);
 
-    const blogState = useSelector((state) => state.blogs.blogs)
+    const blogState = useSelector((state) => state.blog.blogs)
 
     const columns = [
         {
