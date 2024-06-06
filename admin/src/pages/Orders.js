@@ -26,15 +26,42 @@ const Orders = () => {
             dataIndex: 'name',
         },
         {
+            title: 'Products',
+            dataIndex: 'products',
+        },
+        {
+            title: 'Order Date',
+            dataIndex: 'date',
+        },
+        {
+            title: 'Total Amount',
+            dataIndex: 'amount',
+        },
+        {
+            title: 'Payment Method',
+            dataIndex: 'method',
+        },
+        {
             title: 'Action',
             dataIndex: 'action',
         },
     ];
+
     const data1 = [];
     for (let i = 0; i < orderState.length; i++) {
         data1.push({
             key: i + 1,
             name: orderState[i].orderBy.firstname,
+            products: orderState[i].products.map((item, index) => {
+                return (
+                    <ul key={index}>
+                        <li>{item.product.title}</li>
+                    </ul>
+                )
+            }),
+            date: new Date(orderState[i].createdAt).toLocaleDateString(),
+            amount: orderState[i].paymentIntent.amount,
+            method: orderState[i].paymentIntent.status,
             action: (
                 <>
                     <Link to="/" className='fs-4 text-danger'>
