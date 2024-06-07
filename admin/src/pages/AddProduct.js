@@ -1,69 +1,120 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CustomInput from '../components/CustomInput'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { InboxOutlined } from '@ant-design/icons';
-import { message, Upload } from 'antd';
-const { Dragger } = Upload;
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import { useDispatch, useSelector } from 'react-redux';
+import { getBrands } from '../features/brand/brandSlice';
+import { getProdCategories } from '../features/pCategory/pCategorySlice';
 
 const AddProduct = () => {
 
     const [desc, setDesc] = useState()
 
+    const dispatch = useDispatch()
+
+    let schema = Yup.object({
+        title: Yup.string().required("Title is Required"),
+        description: Yup.string().required("Description is Required"),
+        price: Yup.number().required("Price is Required"),
+    });
+
+    const formik = useFormik({
+        initialValues: {
+            title: "",
+            description: "",
+            price: "",
+        },
+        validationSchema: schema,
+        onSubmit: values => {
+            alert(JSON.stringify(values));
+        },
+    });
+
     const handleDesc = (e) => {
         setDesc(e)
     }
 
-    const props = {
-        name: 'file',
-        multiple: true,
-        action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
-        onChange(info) {
-            const { status } = info.file;
-            if (status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully.`);
-            } else if (status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-        onDrop(e) {
-            console.log('Dropped files', e.dataTransfer.files);
-        },
-    };
+    useEffect(() => {
+        dispatch(getBrands())
+        dispatch(getProdCategories())
+    }, [])
+
+    const brandState = useSelector((state) => state.brand.brands)
+    const categoryState = useSelector((state) => state.prodCategory.prodCategories)
 
     return (
         <div>
             <h3 className="mb-4 title">Add Product</h3>
             <div>
-                <form action="">
-                    <CustomInput type="text" label="Enter Product Title" />
-                    <div className='mb-3'>
-                        <ReactQuill theme="snow" value={desc} onChange={(evt) => { handleDesc(evt) }} />
+                <form action="" onSubmit={formik.handleSubmit} className='d-flex flex-column gap-3'>
+                    <CustomInput
+                        type="text"
+                        label="Enter Product Title"
+                        name="title"
+                        value={formik.values.title}
+                        onChange={formik.handleChange("title")}
+                        onBlur={formik.handleBlur("title")}
+                    />
+                    <div className="error">
+                        {formik.touched.title && formik.errors.title}
                     </div>
-                    <CustomInput type="number" label="Enter Product Price" />
+                    <div className=''>
+                        <ReactQuill
+                            theme="snow"
+                            name="description"
+                            value={formik.values.description}
+                            onChange={formik.handleChange("description")}
+                            onBlur={formik.handleBlur("description")}
+                        />
+                    </div>
+                    <div className="error">
+                        {formik.touched.description && formik.errors.description}
+                    </div>
+                    <CustomInput
+                        type="number"
+                        label="Enter Product Price"
+                        name="price"
+                        value={formik.values.price}
+                        onChange={formik.handleChange("price")}
+                        onBlur={formik.handleBlur("price")}
+                    />
+                    <div className="error">
+                        {formik.touched.price && formik.errors.price}
+                    </div>
                     <select name="" id="" className='form-control py-3 mb-3'>
                         <option value="">Select Brand</option>
+                        {
+                            brandState.map((item, index) => (
+                                <option key={index} value={item.title}>{item.title}</option>
+                            ))
+                        }
                     </select>
+                    <div className="error">
+                        {formik.touched.title && formik.errors.title}
+                    </div>
                     <select name="" id="" className='form-control py-3 mb-3'>
                         <option value="">Select Category</option>
+                        {
+                            categoryState.map((item, index) => (
+                                <option key={index} value={item.title}>{item.title}</option>
+                            ))
+                        }
                     </select>
+                    <div className="error">
+                        {formik.touched.title && formik.errors.title}
+                    </div>
                     <select name="" id="" className='form-control py-3 mb-3'>
                         <option value="">Select Color</option>
                     </select>
+                    <div className="error">
+                        {formik.touched.title && formik.errors.title}
+                    </div>
                     <CustomInput type="text" label="Enter Product Title" />
-                    <Dragger {...props}>
-                        <p className="ant-upload-drag-icon">
-                            <InboxOutlined />
-                        </p>
-                        <p className="ant-upload-text">Click or drag file to this area to upload</p>
-                        <p className="ant-upload-hint">
-                            Support for a single or bulk upload. Strictly prohibited from uploading company data or other
-                            banned files.
-                        </p>
-                    </Dragger>
+                    <div className="error">
+                        {formik.touched.title && formik.errors.title}
+                    </div>
                     <button className='btn btn-success border-0 rounded-3 my-5'>Add Product</button>
                 </form>
             </div>
