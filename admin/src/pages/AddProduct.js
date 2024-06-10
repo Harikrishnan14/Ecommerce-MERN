@@ -10,6 +10,7 @@ import { getProdCategories } from '../features/pCategory/pCategorySlice';
 import { getColors } from '../features/color/colorSlice';
 import Multiselect from "react-widgets/Multiselect";
 import "react-widgets/styles.css";
+import Dropzone from 'react-dropzone'
 
 const AddProduct = () => {
 
@@ -164,6 +165,18 @@ const AddProduct = () => {
                     />
                     <div className="error">
                         {formik.touched.quantity && formik.errors.quantity}
+                    </div>
+                    <div className='bg-white border-1 p-5 text-center'>
+                        <Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)}>
+                            {({ getRootProps, getInputProps }) => (
+                                <section>
+                                    <div {...getRootProps()}>
+                                        <input {...getInputProps()} />
+                                        <p>Drag 'n' drop some files here, or click to select files</p>
+                                    </div>
+                                </section>
+                            )}
+                        </Dropzone>
                     </div>
                     <button className='btn btn-success border-0 rounded-3 my-5'>Add Product</button>
                 </form>

@@ -10,13 +10,13 @@ const { createBlog,
     dislikeBlog,
     uploadImgs
 } = require('../controllers/blogController')
-const { uploadImg,
+const { uploadPhoto,
     blogImgResize
 } = require('../middlewares/uploadImagesMiddleware')
 
 
 router.post('/', authMiddleware, isAdmin, createBlog)
-router.put('/upload/:id', authMiddleware, isAdmin, uploadImg.array('images', 2), blogImgResize, uploadImgs)
+router.put('/upload/:id', authMiddleware, isAdmin, uploadPhoto.array('images', 2), blogImgResize, uploadImgs)
 router.put('/like', authMiddleware, likeBlog)
 router.put('/dislike', authMiddleware, dislikeBlog)
 router.put('/:id', authMiddleware, isAdmin, updateBlog)
