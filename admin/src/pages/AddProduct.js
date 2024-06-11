@@ -59,6 +59,7 @@ const AddProduct = () => {
     const brandState = useSelector((state) => state.brand.brands)
     const categoryState = useSelector((state) => state.prodCategory.prodCategories)
     const colorState = useSelector((state) => state.color.colors)
+    const imgState = useSelector((state) => state.upload.images)
 
     const colors = []
     colorState.forEach(element => {
@@ -68,7 +69,7 @@ const AddProduct = () => {
         })
     });
 
-    // console.log(color);
+    console.log(imgState);
 
     return (
         <div>
@@ -177,6 +178,13 @@ const AddProduct = () => {
                                 </section>
                             )}
                         </Dropzone>
+                    </div>
+                    <div className='showimages'>
+                        {imgState.map((i, j) => (
+                            <div key={j}>
+                                <img src={i.url} alt="" />
+                            </div>
+                        ))}
                     </div>
                     <button className='btn btn-success border-0 rounded-3 my-5'>Add Product</button>
                 </form>
