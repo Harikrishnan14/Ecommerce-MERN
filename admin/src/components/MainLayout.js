@@ -21,6 +21,8 @@ import { BiCategoryAlt } from "react-icons/bi";
 import { LuClipboardCheck } from "react-icons/lu";
 import { RiBloggerLine } from "react-icons/ri";
 import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const { Header, Sider, Content } = Layout;
 
 
@@ -201,6 +203,17 @@ const MainLayout = () => {
                         borderRadius: borderRadiusLG,
                     }}
                 >
+                    <ToastContainer
+                        position="top-center"
+                        autoClose={3000}
+                        hideProgressBar={true}
+                        newestOnTop={true}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        theme="light"
+                    />
                     <Outlet />
                 </Content>
             </Layout>

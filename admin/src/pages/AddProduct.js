@@ -97,6 +97,7 @@ const Addproduct = () => {
             formik.resetForm();
             setColor(null);
             setTimeout(() => {
+                navigate('/admin/product-list')
                 dispatch(resetState());
             }, 3000);
         },
@@ -104,7 +105,7 @@ const Addproduct = () => {
 
     const handleColors = (e) => {
         setColor(e);
-        console.log(color);
+        // console.log(color);
     };
 
     return (
@@ -197,7 +198,7 @@ const Addproduct = () => {
                         id=""
                     >
                         <option value="" disabled>
-                            Select Category
+                            Select Tag
                         </option>
                         <option value="featured">Featured</option>
                         <option value="popular">Popular</option>
