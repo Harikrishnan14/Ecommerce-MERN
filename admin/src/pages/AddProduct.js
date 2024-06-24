@@ -99,7 +99,7 @@ const Addproduct = () => {
             setTimeout(() => {
                 navigate('/admin/product-list')
                 dispatch(resetState());
-            }, 3000);
+            }, 1000);
         },
     });
 

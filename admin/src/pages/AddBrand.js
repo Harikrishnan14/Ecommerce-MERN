@@ -32,7 +32,7 @@ const AddBrand = () => {
             setTimeout(() => {
                 navigate('/admin/brand-list')
                 dispatch(resetState());
-            }, 3000);
+            }, 1000);
         },
     });
 
