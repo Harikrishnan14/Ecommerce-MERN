@@ -43,7 +43,7 @@ const AddBrand = () => {
         if (isError) {
             toast.error("Something Went Wrong!");
         }
-    }, [isSuccess, isError, isLoading]);
+    }, [isSuccess, isError, isLoading, createdBrand]);
 
     return (
         <div>

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { baseURL } from "../../utils/baseURL";
+import { config } from "../../utils/axiosConfig";
 
 
 const getColors = async () => {
@@ -7,9 +8,15 @@ const getColors = async () => {
     return response.data;
 }
 
+const createColor = async (color) => {
+    const response = await axios.post(`${baseURL}color/`, color, config);
+    return response.data;
+};
+
 
 const colorService = {
     getColors,
+    createColor
 }
 
 
