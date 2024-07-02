@@ -45,9 +45,9 @@ const Addproduct = () => {
     const catState = useSelector((state) => state.prodCategory.prodCategories);
     const colorState = useSelector((state) => state.color.colors);
     const imgState = useSelector((state) => state.upload.images);
-    const newProduct = useSelector((state) => state.product);
+    const newProductState = useSelector((state) => state.product);
 
-    const { isSuccess, isError, isLoading, createdProduct } = newProduct;
+    const { isSuccess, isError, isLoading, createdProduct } = newProductState;
 
     useEffect(() => {
         if (isSuccess && createdProduct) {
