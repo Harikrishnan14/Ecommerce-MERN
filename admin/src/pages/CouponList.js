@@ -1,19 +1,19 @@
 import { Table } from 'antd';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { getBrands } from '../features/brand/brandSlice';
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import { Link } from 'react-router-dom';
+import { getCoupons } from '../features/coupon/couponSlice';
 
-const BrandList = () => {
+const CouponList = () => {
 
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(getBrands())
+        dispatch(getCoupons())
     }, []);
 
-    const brandState = useSelector((state) => state.brand)
+    const couponState = useSelector((state) => state.coupon.coupons)
 
     const columns = [
         {
@@ -26,16 +26,28 @@ const BrandList = () => {
             sorter: (a, b) => a.name.length - b.name.length,
         },
         {
+            title: 'Discount',
+            dataIndex: 'discount',
+            sorter: (a, b) => a.discount - b.discount,
+        },
+        {
+            title: 'Expiry',
+            dataIndex: 'expiry',
+            sorter: (a, b) => a.name.length - b.name.length,
+        },
+        {
             title: 'Action',
             dataIndex: 'action',
         },
     ];
 
     const data1 = [];
-    for (let i = 0; i < brandState.length; i++) {
+    for (let i = 0; i < couponState.length; i++) {
         data1.push({
             key: i + 1,
-            name: brandState[i].title,
+            name: couponState[i].name,
+            discount: couponState[i].discount,
+            expiry: new Date(couponState[i].expiry).toLocaleString(),
             action: (
                 <>
                     <Link to="/" className='fs-4 text-danger'>
@@ -51,7 +63,7 @@ const BrandList = () => {
 
     return (
         <div>
-            <h3 className='mb-4 title'>Brands</h3>
+            <h3 className='mb-4 title'>Coupons</h3>
             <div>
                 <Table columns={columns} dataSource={data1} />
             </div>
@@ -59,4 +71,4 @@ const BrandList = () => {
     )
 }
 
-export default BrandList
+export default CouponList

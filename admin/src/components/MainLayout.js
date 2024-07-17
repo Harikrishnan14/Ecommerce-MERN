@@ -19,7 +19,8 @@ import {
 import { SiBrandfolder } from "react-icons/si";
 import { BiCategoryAlt } from "react-icons/bi";
 import { LuClipboardCheck } from "react-icons/lu";
-import { RiBloggerLine } from "react-icons/ri";
+import { RiBloggerLine, RiCouponLine } from "react-icons/ri";
+import { GoGraph } from "react-icons/go";
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -36,6 +37,7 @@ const MainLayout = () => {
     const navigate = useNavigate()
 
     return (
+        // <Layout onContextMenu={(e) => e.preventDefault()}>
         <Layout>
             <Sider trigger={null} collapsible collapsed={collapsed}>
                 <div className="logo">
@@ -116,6 +118,24 @@ const MainLayout = () => {
                             key: 'orders',
                             icon: <LuClipboardCheck className='fs-5' />,
                             label: 'Orders',
+                        },
+                        {
+                            key: 'Marketing',
+                            icon: <GoGraph className='fs-5' />,
+                            label: 'Marketing',
+                            children: [
+                                {
+                                    key: 'coupon',
+                                    // icon: <AiOutlinePlusCircle className='fs-5' />,
+                                    icon: <RiCouponLine className='fs-5' />,
+                                    label: 'Add Coupon'
+                                },
+                                {
+                                    key: 'coupon-list',
+                                    icon: <AiOutlineUnorderedList className='fs-5' />,
+                                    label: 'Coupon List'
+                                },
+                            ]
                         },
                         {
                             key: 'blogs',
