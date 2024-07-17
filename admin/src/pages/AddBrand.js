@@ -5,8 +5,7 @@ import { toast } from "react-toastify";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate } from 'react-router-dom';
-import { resetState } from '../features/product/productSlice';
-import { createBrand } from '../features/brand/brandSlice';
+import { createBrand, resetState } from '../features/brand/brandSlice';
 
 const AddBrand = () => {
 
@@ -30,7 +29,7 @@ const AddBrand = () => {
             dispatch(createBrand(values));
             formik.resetForm();
             setTimeout(() => {
-                navigate('/admin/brand-list')
+                // navigate('/admin/brand-list')
                 dispatch(resetState());
             }, 1000);
         },
@@ -43,7 +42,7 @@ const AddBrand = () => {
         if (isError) {
             toast.error("Something Went Wrong!");
         }
-    }, [isSuccess, isError, isLoading, createdBrand]);
+    }, [isSuccess, isError, isLoading]);
 
     return (
         <div>

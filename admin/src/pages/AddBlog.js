@@ -9,7 +9,7 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { createBlog } from "../features/blogs/blogSlice";
+import { createBlog, resetState } from "../features/blogs/blogSlice";
 import { getBlogCategories } from "../features/bCategory/bCategorySlice";
 
 const AddBlog = () => {
@@ -42,7 +42,7 @@ const AddBlog = () => {
         if (isError) {
             toast.error("Something Went Wrong!");
         }
-    }, [isSuccess, isError, isLoading, createdBlog]);
+    }, [isSuccess, isError, isLoading]);
 
     const img = [];
     imgState.forEach((i) => {
@@ -68,7 +68,8 @@ const AddBlog = () => {
             dispatch(createBlog(values));
             formik.resetForm();
             setTimeout(() => {
-                navigate('/admin/blog-list')
+                dispatch(resetState())
+                // navigate('/admin/blog-list')
             }, 1000);
         },
     });

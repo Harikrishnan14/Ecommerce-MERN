@@ -98,7 +98,7 @@ const Addproduct = () => {
             setColor(null);
             setTimeout(() => {
                 navigate('/admin/product-list')
-                dispatch(resetState());
+                dispatch(resetState())
             }, 1000);
         },
     });

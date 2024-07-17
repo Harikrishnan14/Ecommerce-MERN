@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate } from 'react-router-dom';
-import { createProdCategory } from '../features/pCategory/pCategorySlice';
+import { createProdCategory, resetState } from '../features/pCategory/pCategorySlice';
 
 const AddCategory = () => {
 
@@ -29,6 +29,7 @@ const AddCategory = () => {
             dispatch(createProdCategory(values));
             formik.resetForm();
             setTimeout(() => {
+                dispatch(resetState())
                 navigate('/admin/category-list')
             }, 1000);
         },
@@ -41,7 +42,7 @@ const AddCategory = () => {
         if (isError) {
             toast.error("Something Went Wrong!");
         }
-    }, [isSuccess, isError, isLoading, createdProdCategory]);
+    }, [isSuccess, isError, isLoading]);
 
     return (
         <div>

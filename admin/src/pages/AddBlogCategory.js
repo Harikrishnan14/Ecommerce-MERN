@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate } from 'react-router-dom';
-import { createBlogCategory } from '../features/bCategory/bCategorySlice';
+import { createBlogCategory, resetState } from '../features/bCategory/bCategorySlice';
 
 const AddBlogCategory = () => {
     const dispatch = useDispatch()
@@ -28,7 +28,8 @@ const AddBlogCategory = () => {
             dispatch(createBlogCategory(values));
             formik.resetForm();
             setTimeout(() => {
-                navigate('/admin/blog-category-list')
+                dispatch(resetState())
+                // navigate('/admin/blog-category-list')
             }, 1000);
         },
     });
@@ -40,7 +41,7 @@ const AddBlogCategory = () => {
         if (isError) {
             toast.error("Something Went Wrong!");
         }
-    }, [isSuccess, isError, isLoading, createdBlogCategory]);
+    }, [isSuccess, isError, isLoading]);
 
     return (
         <div>

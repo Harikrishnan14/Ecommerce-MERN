@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate } from 'react-router-dom';
-import { createColor } from '../features/color/colorSlice';
+import { createColor, resetState } from '../features/color/colorSlice';
 
 const AddColor = () => {
 
@@ -29,7 +29,8 @@ const AddColor = () => {
             dispatch(createColor(values));
             formik.resetForm();
             setTimeout(() => {
-                navigate('/admin/color-list')
+                dispatch(resetState())
+                // navigate('/admin/color-list')
             }, 1000);
         },
     });
@@ -41,7 +42,7 @@ const AddColor = () => {
         if (isError) {
             toast.error("Something Went Wrong!");
         }
-    }, [isSuccess, isError, isLoading, createdColor]);
+    }, [isSuccess, isError, isLoading]);
 
     return (
         <div>
