@@ -4,13 +4,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { toast } from "react-toastify";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { useNavigate } from 'react-router-dom';
-import { createBrand, resetState } from '../features/brand/brandSlice';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { createBrand, getABrand, resetState } from '../features/brand/brandSlice';
 
 const AddBrand = () => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const location = useLocation()
+
+    const brandId = location.pathname.split("/")[3]
 
     let schema = yup.object().shape({
         title: yup.string().required("Brand Name is Required"),
@@ -18,7 +21,7 @@ const AddBrand = () => {
 
     const newBrand = useSelector((state) => state.brand);
 
-    const { isSuccess, isError, isLoading, createdBrand } = newBrand;
+    const { isSuccess, isError, isLoading, createdBrand, brandName } = newBrand;
 
     const formik = useFormik({
         initialValues: {
@@ -44,9 +47,20 @@ const AddBrand = () => {
         }
     }, [isSuccess, isError, isLoading]);
 
+    useEffect(() => {
+        if (brandId !== undefined) {
+            dispatch(getABrand(brandId))
+            formik.values.title = brandName
+        } else {
+            dispatch(resetState())
+        }
+    }, [brandId])
+
+    console.log(brandName)
+
     return (
         <div>
-            <h3 className="mb-4 title">Add Brand</h3>
+            <h3 className="mb-4 title">{brandId !== undefined ? "Edit" : "Add"} Brand</h3>
             <div>
                 <form action="" onSubmit={formik.handleSubmit}>
                     <CustomInput

@@ -13,7 +13,7 @@ const BrandList = () => {
         dispatch(getBrands())
     }, []);
 
-    const brandState = useSelector((state) => state.brand)
+    const brandState = useSelector((state) => state.brand.brands)
 
     const columns = [
         {
@@ -38,7 +38,7 @@ const BrandList = () => {
             name: brandState[i].title,
             action: (
                 <>
-                    <Link to="/" className='fs-4 text-danger'>
+                    <Link to={`/admin/brand/${brandState[i]._id}`} className='fs-4 text-danger'>
                         <AiOutlineEdit />
                     </Link>
                     <Link to="/" className='ms-3 fs-4 text-danger'>
