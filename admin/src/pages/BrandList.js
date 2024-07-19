@@ -1,7 +1,7 @@
 import { Table } from 'antd';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { getBrands } from '../features/brand/brandSlice';
+import { getBrands, resetState } from '../features/brand/brandSlice';
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import { Link } from 'react-router-dom';
 
@@ -10,6 +10,7 @@ const BrandList = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
+        dispatch(resetState())
         dispatch(getBrands())
     }, []);
 

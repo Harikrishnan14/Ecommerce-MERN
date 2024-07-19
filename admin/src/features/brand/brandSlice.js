@@ -36,7 +36,7 @@ export const createBrand = createAsyncThunk(
     }
 );
 
-export const updateBrand = createAsyncThunk(
+export const updateABrand = createAsyncThunk(
     "brand/update-brand",
     async (brand, thunkAPI) => {
         try {
@@ -100,20 +100,20 @@ export const brandSlice = createSlice({
                 state.isSuccess = false
                 state.message = action.error
             })
-            .addCase(updateBrand.pending, (state) => {
-                state.isLoading = true
+            .addCase(updateABrand.pending, (state) => {
+                state.isLoading = true;
             })
-            .addCase(updateBrand.fulfilled, (state, action) => {
-                state.isLoading = false
-                state.isError = false
-                state.isSuccess = true
-                state.updatedBrand = action.payload
+            .addCase(updateABrand.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.updatedBrand = action.payload;
             })
-            .addCase(updateBrand.rejected, (state, action) => {
-                state.isLoading = false
-                state.isError = true
-                state.isSuccess = false
-                state.message = action.error
+            .addCase(updateABrand.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
             })
             .addCase(resetState, () => initialState)
     }
