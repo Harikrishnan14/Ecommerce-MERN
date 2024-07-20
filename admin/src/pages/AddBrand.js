@@ -21,7 +21,7 @@ const AddBrand = () => {
 
     const newBrand = useSelector((state) => state.brand);
 
-    const { isSuccess, isError, isLoading, createdBrand, brandName, updatedBrand, } = newBrand;
+    const { isSuccess, isError, isLoading, createdBrand, brandName, updatedBrand } = newBrand;
 
     const formik = useFormik({
         enableReinitialize: true,
