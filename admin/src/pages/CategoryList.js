@@ -1,15 +1,19 @@
 import { Table } from 'antd';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
-import { getProdCategories } from '../features/pCategory/pCategorySlice';
+import { deleteAProdCategory, getProdCategories, resetState } from '../features/pCategory/pCategorySlice';
 import { Link } from 'react-router-dom';
+import CustomModal from '../components/CustomModal';
 
 const CategoryList = () => {
 
     const dispatch = useDispatch()
+    const [open, setOpen] = useState(false)
+    const [categoryId, setCategoryId] = useState("")
 
     useEffect(() => {
+        dispatch(resetState())
         dispatch(getProdCategories())
     }, []);
 
@@ -30,7 +34,7 @@ const CategoryList = () => {
             dataIndex: 'action',
         },
     ];
-    
+
     const data1 = [];
     for (let i = 0; i < pCategoryState.length; i++) {
         data1.push({
@@ -38,15 +42,32 @@ const CategoryList = () => {
             name: pCategoryState[i].title,
             action: (
                 <>
-                    <Link to="/" className='fs-4 text-danger'>
+                    <Link to={`/admin/category/${pCategoryState[i]._id}`} className='fs-4 text-danger'>
                         <AiOutlineEdit />
                     </Link>
-                    <Link to="/" className='ms-3 fs-4 text-danger'>
+                    <button to="/" className='ms-3 fs-4 text-danger bg-transparent border-0' onClick={() => showModal(pCategoryState[i]._id)}>
                         <AiOutlineDelete />
-                    </Link>
+                    </button>
                 </>
             ),
         });
+    }
+
+    const showModal = (id) => {
+        setCategoryId(id)
+        setOpen(true);
+    }
+
+    const hideModal = () => {
+        setOpen(false);
+    }
+
+    const deleteProdCategory = (id) => {
+        dispatch(deleteAProdCategory(id))
+        setOpen(false)
+        setTimeout(() => {
+            dispatch(getProdCategories())
+        }, 100);
     }
 
     return (
@@ -55,6 +76,12 @@ const CategoryList = () => {
             <div>
                 <Table columns={columns} dataSource={data1} />
             </div>
+            <CustomModal
+                title="Are you sure you want to delete this Category?"
+                open={open}
+                hideModal={hideModal}
+                performAction={() => deleteProdCategory(categoryId)}
+            />
         </div>
     )
 }
