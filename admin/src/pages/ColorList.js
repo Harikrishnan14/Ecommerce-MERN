@@ -1,15 +1,19 @@
 import { Table } from 'antd';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { getColors } from '../features/color/colorSlice';
+import { deleteAColor, getColors, resetState } from '../features/color/colorSlice';
 import { Link } from 'react-router-dom';
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
+import CustomModal from '../components/CustomModal';
 
 const ColorList = () => {
 
     const dispatch = useDispatch()
+    const [open, setOpen] = useState(false)
+    const [colorId, setColorId] = useState("")
 
     useEffect(() => {
+        dispatch(resetState())
         dispatch(getColors())
     }, []);
 
@@ -36,15 +40,32 @@ const ColorList = () => {
             name: colorState[i].title,
             action: (
                 <>
-                    <Link to="/" className='fs-4 text-danger'>
+                    <Link to={`/admin/color/${colorState[i]._id}`} className='fs-4 text-danger'>
                         <AiOutlineEdit />
                     </Link>
-                    <Link to="/" className='ms-3 fs-4 text-danger'>
+                    <button className='ms-3 fs-4 text-danger bg-transparent border-0' onClick={() => showModal(colorState[i]._id)}>
                         <AiOutlineDelete />
-                    </Link>
+                    </button>
                 </>
             ),
         });
+    }
+
+    const showModal = (id) => {
+        setColorId(id)
+        setOpen(true);
+    }
+
+    const hideModal = () => {
+        setOpen(false);
+    }
+
+    const deleteColor = (id) => {
+        dispatch(deleteAColor(id))
+        setOpen(false)
+        setTimeout(() => {
+            dispatch(getColors())
+        }, 100);
     }
 
     return (
@@ -53,6 +74,12 @@ const ColorList = () => {
             <div>
                 <Table columns={columns} dataSource={data1} />
             </div>
+            <CustomModal
+                title="Are you sure you want to delete this Color?"
+                open={open}
+                hideModal={hideModal}
+                performAction={() => deleteColor(colorId)}
+            />
         </div>
     )
 }

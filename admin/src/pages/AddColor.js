@@ -4,13 +4,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { toast } from "react-toastify";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { useNavigate } from 'react-router-dom';
-import { createColor, resetState } from '../features/color/colorSlice';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { createColor, getAColor, resetState, updateAColor } from '../features/color/colorSlice';
 
 const AddColor = () => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const location = useLocation()
+
+    const colorId = location.pathname.split("/")[3]
 
     let schema = yup.object().shape({
         title: yup.string().required("Color is Required"),
@@ -18,27 +21,46 @@ const AddColor = () => {
 
     const newColor = useSelector((state) => state.color);
 
-    const { isSuccess, isError, isLoading, createdColor } = newColor
+    const { isSuccess, isError, isLoading, createdColor, colorName, updatedColor } = newColor
 
     const formik = useFormik({
+        enableReinitialize: true,
         initialValues: {
-            title: "",
+            title: colorName || "",
         },
         validationSchema: schema,
         onSubmit: (values) => {
-            dispatch(createColor(values));
-            formik.resetForm();
-            setTimeout(() => {
-                dispatch(resetState())
-                // navigate('/admin/color-list')
-            }, 1000);
+            if (colorId !== undefined) {
+                const data = { id: colorId, colorData: values };
+                dispatch(updateAColor(data));
+                dispatch(resetState());
+            } else {
+                dispatch(createColor(values));
+                formik.resetForm();
+                setTimeout(() => {
+                    dispatch(resetState());
+                }, 1000);
+            }
         },
     });
+
+    useEffect(() => {
+        if (colorId !== undefined) {
+            dispatch(getAColor(colorId));
+        } else {
+            dispatch(resetState());
+        }
+    }, [colorId]);
 
     useEffect(() => {
         if (isSuccess && createdColor) {
             toast.success("Color Added Successfullly!");
         }
+        if (isSuccess && updatedColor) {
+            toast.success("Color Updated Successfullly!");
+            navigate("/admin/color-list");
+        }
+
         if (isError) {
             toast.error("Something Went Wrong!");
         }
@@ -46,7 +68,7 @@ const AddColor = () => {
 
     return (
         <div>
-            <h3 className="mb-4 title">Add Color</h3>
+            <h3 className="mb-4 title">{colorId !== undefined ? "Edit" : "Add"} Color</h3>
             <div>
                 <form action="" onSubmit={formik.handleSubmit}>
                     <CustomInput
@@ -60,7 +82,7 @@ const AddColor = () => {
                     <div className="error">
                         {formik.touched.title && formik.errors.title}
                     </div>
-                    <button type='submit' className='btn btn-success border-0 rounded-3 my-4'>Add Color</button>
+                    <button type='submit' className='btn btn-success border-0 rounded-3 my-4'>{colorId !== undefined ? "Edit" : "Add"} Color</button>
                 </form>
             </div>
         </div>
