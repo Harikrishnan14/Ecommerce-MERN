@@ -23,14 +23,14 @@ const AddCoupon = () => {
 
     const newCoupon = useSelector((state) => state.coupon);
 
-    const { isSuccess, isError, isLoading, createdCoupon, couponData, updatedCoupon } = newCoupon;
+    const { isSuccess, isError, isLoading, createdCoupon, couponName, couponExpiry, couponDiscount, updatedCoupon } = newCoupon;
 
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            name: couponData?.name || "",
-            expiry: couponData?.expiry || "",
-            discount: couponData?.discount || "",
+            name: couponName || "",
+            expiry: couponExpiry || "",
+            discount: couponDiscount || "",
         },
         validationSchema: schema,
         onSubmit: (values) => {

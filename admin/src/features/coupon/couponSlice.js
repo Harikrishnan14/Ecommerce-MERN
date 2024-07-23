@@ -100,7 +100,9 @@ export const brandSlice = createSlice({
                 state.isLoading = false
                 state.isError = false
                 state.isSuccess = true
-                state.couponData = action.payload
+                state.couponName = action.payload.name
+                state.couponExpiry = action.payload.expiry
+                state.couponDiscount = action.payload.discount
             })
             .addCase(getACoupon.rejected, (state, action) => {
                 state.isLoading = false
