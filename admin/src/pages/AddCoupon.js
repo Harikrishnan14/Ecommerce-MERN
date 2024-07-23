@@ -29,7 +29,7 @@ const AddCoupon = () => {
         enableReinitialize: true,
         initialValues: {
             name: couponName || "",
-            expiry: couponExpiry || "",
+            expiry: new Date(couponExpiry).toLocaleDateString("en-CA") || "",
             discount: couponDiscount || "",
         },
         validationSchema: schema,
