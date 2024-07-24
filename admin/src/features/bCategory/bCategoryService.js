@@ -13,10 +13,28 @@ const createBlogCategory = async (blog) => {
     return response.data;
 };
 
+const getBlogCategory = async (id) => {
+    const response = await axios.get(`${baseURL}blogcategory/${id}`, config);
+    return response.data;
+};
+
+const updateBlogCategory = async (category) => {
+    const response = await axios.put(`${baseURL}blogcategory/${category.id}`, { title: category.categoryData.title }, config);
+    return response.data;
+};
+
+const deleteBlogCategory = async (id) => {
+    const response = await axios.delete(`${baseURL}blogcategory/${id}`, config);
+    return response.data;
+};
+
 
 const blogCategoryService = {
     getBlogCategories,
-    createBlogCategory
+    createBlogCategory,
+    getBlogCategory,
+    updateBlogCategory,
+    deleteBlogCategory
 }
 
 

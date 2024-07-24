@@ -85,7 +85,7 @@ export const prodCategorySlice = createSlice({
                 state.isLoading = false;
                 state.isError = false;
                 state.isSuccess = true;
-                state.categoryName = action.payload;
+                state.categoryName = action.payload.title;
             })
             .addCase(getAProdCategory.rejected, (state, action) => {
                 state.isLoading = false;

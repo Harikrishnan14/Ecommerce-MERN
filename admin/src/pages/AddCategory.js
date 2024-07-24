@@ -22,6 +22,7 @@ const AddCategory = () => {
     const newCategory = useSelector((state) => state.prodCategory);
 
     const { isSuccess, isError, isLoading, createdProdCategory, categoryName, updatedCategory } = newCategory
+    console.log(categoryName)
 
     const formik = useFormik({
         enableReinitialize: true,

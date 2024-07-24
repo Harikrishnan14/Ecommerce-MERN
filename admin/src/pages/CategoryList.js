@@ -45,7 +45,7 @@ const CategoryList = () => {
                     <Link to={`/admin/category/${pCategoryState[i]._id}`} className='fs-4 text-danger'>
                         <AiOutlineEdit />
                     </Link>
-                    <button to="/" className='ms-3 fs-4 text-danger bg-transparent border-0' onClick={() => showModal(pCategoryState[i]._id)}>
+                    <button className='ms-3 fs-4 text-danger bg-transparent border-0' onClick={() => showModal(pCategoryState[i]._id)}>
                         <AiOutlineDelete />
                     </button>
                 </>
