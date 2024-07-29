@@ -170,19 +170,21 @@ const AddBlog = () => {
                             )}
                         </Dropzone>
                     </div>
-                    <div className="showimages d-flex flex-wrap mt-3 gap-3">
-                        {images.map((i, j) => (
-                            <div className="position-relative" key={j}>
-                                <button
-                                    type="button"
-                                    onClick={() => handleDeleteImg(i.public_id)}
-                                    className="btn-close position-absolute"
-                                    style={{ top: "10px", right: "10px" }}
-                                ></button>
-                                <img src={i.url} alt="" width={200} height={200} />
-                            </div>
-                        ))}
-                    </div>
+                    {images.length > 0 && (
+                        <div className="showimages d-flex flex-wrap mt-3 gap-3">
+                            {images.map((i, j) => (
+                                <div className="position-relative" key={j}>
+                                    <button
+                                        type="button"
+                                        onClick={() => handleDeleteImg(i.public_id)}
+                                        className="btn-close position-absolute"
+                                        style={{ top: "10px", right: "10px" }}
+                                    ></button>
+                                    <img src={i.url} alt="" width={200} height={200} />
+                                </div>
+                            ))}
+                        </div>
+                    )}
                     <button type='submit' className='btn btn-success border-0 rounded-3 my-5'>{blogId !== undefined ? "Edit" : "Add"} Blog</button>
                 </form>
             </div>
