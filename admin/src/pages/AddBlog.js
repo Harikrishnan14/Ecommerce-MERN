@@ -13,23 +13,13 @@ import { createBlog, getABlog, resetState, updateABlog } from "../features/blogs
 import { getBlogCategories } from "../features/bCategory/bCategorySlice";
 
 const AddBlog = () => {
-
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const location = useLocation()
-    const [desc, setDesc] = useState()
+    const location = useLocation();
+    const [desc, setDesc] = useState("");
     const [images, setImages] = useState([]);
 
-    const blogId = location.pathname.split("/")[3]
-
-    useEffect(() => {
-        if (blogId !== undefined) {
-            dispatch(getABlog(blogId));
-            img.push(blogImgs)
-        } else {
-            dispatch(resetState());
-        }
-    }, [blogId, dispatch]);
+    const blogId = location.pathname.split("/")[3];
 
     let schema = yup.object().shape({
         title: yup.string().required("Title is Required"),
@@ -37,41 +27,60 @@ const AddBlog = () => {
         category: yup.string().required("Category is Required"),
     });
 
-    useEffect(() => {
-        dispatch(resetState())
-        dispatch(getBlogCategories());
-    }, []);
-
     const imgState = useSelector((state) => state.upload.images);
-    const brandCatState = useSelector((state) => state.blogCategory.blogCategories)
+    const brandCatState = useSelector((state) => state.blogCategory.blogCategories);
     const newBlogState = useSelector((state) => state.blog);
 
     const { isSuccess, isError, isLoading, createdBlog, updatedBlog, blogName, blogCat, blogDesc, blogImgs } = newBlogState;
 
     useEffect(() => {
+        if (blogId !== undefined) {
+            dispatch(getABlog(blogId));
+        } else {
+            dispatch(resetState());
+            setImages([]);
+        }
+    }, [blogId, dispatch]);
+
+    useEffect(() => {
+        dispatch(resetState());
+        dispatch(getBlogCategories());
+    }, [dispatch]);
+
+    useEffect(() => {
         if (isSuccess && createdBlog) {
-            toast.success("Blog Added Successfullly!");
+            toast.success("Blog Added Successfully!");
         }
         if (isSuccess && updatedBlog) {
-            toast.success("Blog Updated Successfullly!");
+            toast.success("Blog Updated Successfully!");
+            navigate("/admin/blog-list");
         }
-
         if (isError) {
             toast.error("Something Went Wrong!");
         }
-    }, [isSuccess, isError, isLoading]);
-
-    const img = [];
-    imgState.forEach((i) => {
-        img.push({
-            public_id: i.public_id,
-            url: i.url,
-        });
-    });
+    }, [isSuccess, isError, isLoading, createdBlog, updatedBlog, navigate]);
 
     useEffect(() => {
-        formik.values.images = img;
-    }, []);
+        if (blogImgs && blogImgs.length > 0) {
+            const initialImages = blogImgs.map((img) => ({
+                public_id: img.public_id,
+                url: img.url,
+            }));
+            setImages(initialImages);
+        }
+    }, [blogImgs]);
+
+    useEffect(() => {
+        if (imgState.length > 0) {
+            setImages((prevImages) => [
+                ...prevImages,
+                ...imgState.map((img) => ({
+                    public_id: img.public_id,
+                    url: img.url,
+                })),
+            ]);
+        }
+    }, [imgState]);
 
     const formik = useFormik({
         enableReinitialize: true,
@@ -79,24 +88,29 @@ const AddBlog = () => {
             title: blogName || "",
             description: blogDesc || "",
             category: blogCat || "",
-            images: blogImgs || "",
+            images: images,
         },
         validationSchema: schema,
         onSubmit: (values) => {
+            values.images = images;
             if (blogId !== undefined) {
                 const data = { id: blogId, blogData: values };
                 dispatch(updateABlog(data));
-                navigate('/admin/blog-list')
-                dispatch(resetState())
+                dispatch(resetState());
             } else {
                 dispatch(createBlog(values));
                 formik.resetForm();
                 setTimeout(() => {
-                    dispatch(resetState())
+                    dispatch(resetState());
                 }, 1000);
             }
         },
     });
+
+    const handleDeleteImg = (public_id) => {
+        dispatch(deleteImg(public_id));
+        setImages(images.filter(img => img.public_id !== public_id));
+    };
 
     return (
         <div>
@@ -125,13 +139,11 @@ const AddBlog = () => {
                         id=""
                     >
                         <option value="">Select Blog Category</option>
-                        {brandCatState.map((i, j) => {
-                            return (
-                                <option key={j} value={i.title}>
-                                    {i.title}
-                                </option>
-                            );
-                        })}
+                        {brandCatState.map((i, j) => (
+                            <option key={j} value={i.title}>
+                                {i.title}
+                            </option>
+                        ))}
                     </select>
                     <div className="error">
                         {formik.touched.category && formik.errors.category}
@@ -147,41 +159,35 @@ const AddBlog = () => {
                         {formik.touched.description && formik.errors.description}
                     </div>
                     <div className="bg-white border-1 p-5 text-center mt-3">
-                        <Dropzone
-                            onDrop={(acceptedFiles) => dispatch(uploadImg(acceptedFiles))}
-                        >
+                        <Dropzone onDrop={(acceptedFiles) => dispatch(uploadImg(acceptedFiles))}>
                             {({ getRootProps, getInputProps }) => (
                                 <section>
                                     <div {...getRootProps()}>
                                         <input {...getInputProps()} />
-                                        <p>
-                                            Drag 'n' drop some files here, or click to select files
-                                        </p>
+                                        <p>Drag 'n' drop some files here, or click to select files</p>
                                     </div>
                                 </section>
                             )}
                         </Dropzone>
                     </div>
                     <div className="showimages d-flex flex-wrap mt-3 gap-3">
-                        {imgState?.map((i, j) => {
-                            return (
-                                <div className=" position-relative" key={j}>
-                                    <button
-                                        type="button"
-                                        onClick={() => dispatch(deleteImg(i.public_id))}
-                                        className="btn-close position-absolute"
-                                        style={{ top: "10px", right: "10px" }}
-                                    ></button>
-                                    <img src={i.url} alt="" width={200} height={200} />
-                                </div>
-                            );
-                        })}
+                        {images.map((i, j) => (
+                            <div className="position-relative" key={j}>
+                                <button
+                                    type="button"
+                                    onClick={() => handleDeleteImg(i.public_id)}
+                                    className="btn-close position-absolute"
+                                    style={{ top: "10px", right: "10px" }}
+                                ></button>
+                                <img src={i.url} alt="" width={200} height={200} />
+                            </div>
+                        ))}
                     </div>
                     <button type='submit' className='btn btn-success border-0 rounded-3 my-5'>{blogId !== undefined ? "Edit" : "Add"} Blog</button>
                 </form>
             </div>
-        </div >
-    )
+        </div>
+    );
 }
 
-export default AddBlog
+export default AddBlog;
