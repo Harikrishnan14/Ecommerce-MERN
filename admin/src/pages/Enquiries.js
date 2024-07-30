@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Table } from 'antd'
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteAnEnquiry, getEnquiries, resetState } from '../features/enquiry/enquirySlice';
+import { deleteAnEnquiry, getEnquiries, resetState, updateAnEnquiry } from '../features/enquiry/enquirySlice';
 import { AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
 import { Link } from 'react-router-dom';
 import CustomModal from '../components/CustomModal';
@@ -18,6 +18,14 @@ const Enquiries = () => {
     }, []);
 
     const enquiryState = useSelector((state) => state.enquiry.enquiries)
+
+    const setEnquiryStatus = (status, id) => {
+        const data = { id: id, enquiryData: status }
+        dispatch(updateAnEnquiry(data))
+        setTimeout(() => {
+            dispatch(getEnquiries())
+        }, 100);
+    }
 
     const columns = [
         {
@@ -54,13 +62,22 @@ const Enquiries = () => {
             email: enquiryState[i].email,
             mobile: enquiryState[i].mobile,
             status: (
-                <select name='' id='' className='form-control form-select'>
-                    <option value="">Set status</option>
+                <select
+                    name=""
+                    id=""
+                    value={enquiryState[i].status ? enquiryState[i].status : "Submitted"}
+                    className="form-control form-select"
+                    onChange={(e) => setEnquiryStatus(e.target.value, enquiryState[i]._id)}
+                >
+                    <option value="Submitted">Submitted</option>
+                    <option value="Contacted">Contacted</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Resolved">Resolved</option>
                 </select>
             ),
             action: (
                 <>
-                    <Link to="/" className='ms-3 fs-4 text-danger'>
+                    <Link to={`/admin/enquiries/${enquiryState[i]._id}`} className='ms-3 fs-4 text-danger'>
                         <AiOutlineEye />
                     </Link>
                     <button className='ms-3 fs-4 text-danger bg-transparent border-0' onClick={() => showModal(enquiryState[i]._id)}>

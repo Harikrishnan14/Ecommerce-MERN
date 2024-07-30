@@ -17,6 +17,22 @@ export const getEnquiries = createAsyncThunk('enquiry/get-enquiries', async (thu
     }
 })
 
+export const getAnEnquiry = createAsyncThunk('enquiry/get-enquiry', async (id, thunkAPI) => {
+    try {
+        return await enquiryService.getEnquiry(id)
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+    }
+})
+
+export const updateAnEnquiry = createAsyncThunk('enquiry/update-enquiry', async (enquiry, thunkAPI) => {
+    try {
+        return await enquiryService.updateEnquiry(enquiry)
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+    }
+})
+
 export const deleteAnEnquiry = createAsyncThunk('enquiry/delete-enquiry', async (id, thunkAPI) => {
     try {
         return await enquiryService.deleteEnquiry(id)
@@ -43,6 +59,40 @@ export const enquirySlice = createSlice({
                 state.enquiries = action.payload
             })
             .addCase(getEnquiries.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.isSuccess = false
+                state.message = action.error
+            })
+            .addCase(getAnEnquiry.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getAnEnquiry.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isError = false
+                state.isSuccess = true
+                state.enquiryName = action.payload.name
+                state.enquiryMobile = action.payload.mobile
+                state.enquiryEmail = action.payload.email
+                state.enquiryComment = action.payload.comment
+                state.enquiryStatus = action.payload.status
+            })
+            .addCase(getAnEnquiry.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.isSuccess = false
+                state.message = action.error
+            })
+            .addCase(updateAnEnquiry.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(updateAnEnquiry.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isError = false
+                state.isSuccess = true
+                state.updatedEnquiry = action.payload
+            })
+            .addCase(updateAnEnquiry.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.isSuccess = false
