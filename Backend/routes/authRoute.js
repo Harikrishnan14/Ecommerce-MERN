@@ -22,6 +22,7 @@ const { registerUser,
     createOrder,
     getOrders,
     updateOrderStatus,
+    getOrderByUserId,
     getAllOrders
 } = require('../controllers/userController')
 const { authMiddleware, isAdmin } = require('../middlewares/authMiddleware')
@@ -41,6 +42,7 @@ router.post('/cart/cash-order', authMiddleware, createOrder)
 router.get('/all-users', getAllUsers)
 router.get('/get-orders', authMiddleware, getOrders)
 router.get('/get-all-orders', authMiddleware, isAdmin, getAllOrders)
+router.post('/get-orders-by-user/:id', authMiddleware, isAdmin, getOrderByUserId)
 router.get('/refresh', handleRefreshToken)
 router.get("/logout", logout);
 router.get('/wishlist', authMiddleware, getWishlist)

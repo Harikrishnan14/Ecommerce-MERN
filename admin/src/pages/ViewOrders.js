@@ -1,19 +1,23 @@
 import { Table } from 'antd'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrders } from '../features/auth/authSlice';
+import { getOrderByUser } from '../features/auth/authSlice';
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
-const Orders = () => {
+const ViewOrders = () => {
 
     const dispatch = useDispatch()
+    const location = useLocation()
+
+    const userId = location.pathname.split("/")[3]
 
     useEffect(() => {
-        dispatch(getOrders())
+        dispatch(getOrderByUser(userId))
     }, []);
 
-    const orderState = useSelector((state) => state.auth.orders)
+    const orderState = useSelector((state) => state.auth?.userOrders?.products)
+    console.log(orderState);
 
     const columns = [
         {
@@ -21,12 +25,20 @@ const Orders = () => {
             dataIndex: 'key',
         },
         {
-            title: 'Name',
+            title: 'Product Name',
             dataIndex: 'name',
         },
         {
-            title: 'Products',
-            dataIndex: 'products',
+            title: 'Brand',
+            dataIndex: 'brand',
+        },
+        {
+            title: 'Color',
+            dataIndex: 'color',
+        },
+        {
+            title: 'Quantity',
+            dataIndex: 'quantity',
         },
         {
             title: 'Order Date',
@@ -37,24 +49,21 @@ const Orders = () => {
             dataIndex: 'amount',
         },
         {
-            title: 'Payment Method',
-            dataIndex: 'method',
-        },
-        {
             title: 'Action',
             dataIndex: 'action',
         },
     ];
 
     const data1 = [];
-    for (let i = 0; i < orderState.length; i++) {
+    for (let i = 0; i < orderState?.length; i++) {
         data1.push({
             key: i + 1,
-            name: orderState[i].orderBy.firstname,
-            products: <Link to={`/admin/order/${orderState[i].orderBy._id}`}>View Orders</Link>,
-            date: new Date(orderState[i].createdAt).toLocaleDateString(),
-            amount: orderState[i].paymentIntent.amount,
-            method: orderState[i].paymentIntent.status,
+            name: orderState[i].product.title,
+            brand: orderState[i].product.brand,
+            color: orderState[i].color,
+            quantity: orderState[i].count,
+            date: new Date(orderState[i].product.createdAt).toLocaleDateString(),
+            amount: (orderState[i].count * orderState[i].product.price),
             action: (
                 <>
                     <Link to="/" className='fs-4 text-danger'>
@@ -70,7 +79,7 @@ const Orders = () => {
 
     return (
         <div>
-            <h3 className='mb-4 title'>Orders</h3>
+            <h3 className='mb-4 title'>View Orders</h3>
             <div>
                 <Table columns={columns} dataSource={data1} />
             </div>
@@ -78,4 +87,4 @@ const Orders = () => {
     )
 }
 
-export default Orders
+export default ViewOrders

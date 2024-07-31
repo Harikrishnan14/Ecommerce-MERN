@@ -28,10 +28,16 @@ const getOrders = async () => {
     return response.data;
 }
 
+const getOrder = async (id) => {
+    const response = await axios.post(`${baseURL}user/get-orders-by-user/${id}`, "", config);
+    return response.data;
+}
+
 
 const authService = {
     login,
-    getOrders
+    getOrders,
+    getOrder
 }
 
 
