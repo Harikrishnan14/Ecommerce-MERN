@@ -965,3 +965,8 @@ footer .input-group-text {
     font-size: 16px;
     color: var(--color-777777);
 }
+
+.error {
+    color: red;
+    font-size: 12px;
+}
