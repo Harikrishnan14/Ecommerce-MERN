@@ -18,6 +18,14 @@ export const registerUser = createAsyncThunk('auth/register', async (userData, t
     }
 })
 
+export const loginUser = createAsyncThunk('auth/login', async (userData, thunkAPI) => {
+    try {
+        return await userService.login(userData)
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+    }
+})
+
 export const userSlice = createSlice({
     name: "auth",
     initialState: initialState,
@@ -37,6 +45,28 @@ export const userSlice = createSlice({
                 }
             })
             .addCase(registerUser.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.isSuccess = false
+                state.message = action.error
+                if (state.isError === true) {
+                    toast.error("Oops, something went wrong!")
+                }
+            })
+            .addCase(loginUser.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(loginUser.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.message = "success"
+                state.createdUser = action.payload
+                if (state.isSuccess === true) {
+                    localStorage.setItem('token', action.payload.token)
+                    toast.success("Logged in Successfully!")
+                }
+            })
+            .addCase(loginUser.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.isSuccess = false

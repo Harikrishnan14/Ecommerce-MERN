@@ -16,7 +16,7 @@ const SignUp = () => {
     const signUpSchema = yup.object({
         firstname: yup.string().required("First Name is required"),
         lastname: yup.string().default('').required("Last Name is required"),
-        email: yup.string().required("Email should be valid").email(),
+        email: yup.string().required("Email is required").email("Email should be valid"),
         mobile: yup.string().required("Mobile Number is required"),
         password: yup.string().required("Password is required")
     });
