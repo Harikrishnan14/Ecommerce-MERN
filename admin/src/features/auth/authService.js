@@ -18,7 +18,7 @@ const config = {
 const login = async (user) => {
     const response = await axios.post(`${baseURL}user/admin-login`, user);
     if (response.data) {
-        localStorage.setItem("user", JSON.stringify(response.data))
+        localStorage.setItem("admin", JSON.stringify(response.data))
     }
     return response.data;
 }
