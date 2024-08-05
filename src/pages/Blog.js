@@ -1,10 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import MetaTags from '../components/MetaTags'
 import BreadCrumb from '../components/BreadCrumb'
 import BlogCard from '../components/BlogCard'
 import Container from '../components/Container'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllBlogs } from '../features/blogs/blogsSlice'
 
 const Blog = () => {
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(getAllBlogs())
+    }, []);
+
+    const blogState = useSelector((state) => state.blog.blogs)
+
     return (
         <div>
             <MetaTags title="Blogs" />
@@ -26,18 +37,17 @@ const Blog = () => {
                     </div>
                     <div className="col-9">
                         <div className="row">
-                            <div className="div col-6 mb-4">
-                                <BlogCard />
-                            </div>
-                            <div className="div col-6 mb-4">
-                                <BlogCard />
-                            </div>
-                            <div className="div col-6 mb-4">
-                                <BlogCard />
-                            </div>
-                            <div className="div col-6 mb-4">
-                                <BlogCard />
-                            </div>
+                            {blogState?.map((item, index) => (
+                                <div className="div col-6 mb-4" key={index}>
+                                    <BlogCard
+                                        id={item?.id}
+                                        title={item?.title}
+                                        description={item?.description}
+                                        date={item?.createdAt}
+                                        image={item?.images[0]?.url}
+                                    />
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Marquee from "react-fast-marquee";
 import BlogCard from '../components/BlogCard';
@@ -27,8 +27,19 @@ import Brand6 from '../images/brand-06.png'
 import Brand7 from '../images/brand-07.png'
 import Brand8 from '../images/brand-08.png'
 import { Services } from '../utils/Data';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllBlogs } from '../features/blogs/blogsSlice';
 
 const Home = () => {
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(getAllBlogs())
+    }, []);
+
+    const blogState = useSelector((state) => state.blog.blogs)
+
     return (
         <>
             <MetaTags title="ShopNest" />
@@ -294,18 +305,17 @@ const Home = () => {
                         </h3>
                     </div>
                     <div className="row">
-                        <div className="col-3">
-                            <BlogCard />
-                        </div>
-                        <div className="col-3">
-                            <BlogCard />
-                        </div>
-                        <div className="col-3">
-                            <BlogCard />
-                        </div>
-                        <div className="col-3">
-                            <BlogCard />
-                        </div>
+                        {blogState?.slice(0, 4)?.map((item, index) => (
+                            <div className="col-3" key={index}>
+                                <BlogCard
+                                    id={item?.id}
+                                    title={item?.title}
+                                    description={item?.description}
+                                    date={item?.createdAt}
+                                    image={item?.images[0]?.url}
+                                />
+                            </div>
+                        ))}
                     </div>
                 </div>
             </Container>
