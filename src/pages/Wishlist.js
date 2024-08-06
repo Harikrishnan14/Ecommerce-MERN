@@ -31,7 +31,7 @@ const Wishlist = () => {
             <BreadCrumb title="Wishlist" />
             <Container class1='wishlist-wrapper home-wrapper-2 py-5'>
                 <div className="row">
-                    {wishlistState?.length < 0 ? (
+                    {wishlistState?.length !== 0 ? (
                         wishlistState?.map((item, index) => (
                             <div className="col-3 mb-3" key={index}>
                                 <div className="wishlist-card position-relative">

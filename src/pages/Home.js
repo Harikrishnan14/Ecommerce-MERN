@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import ReactStars from "react-rating-stars-component";
+import { Link, useLocation } from 'react-router-dom'
 import Marquee from "react-fast-marquee";
 import BlogCard from '../components/BlogCard';
 import ProductCard from '../components/ProductCard';
@@ -26,9 +27,16 @@ import Brand5 from '../images/brand-05.png'
 import Brand6 from '../images/brand-06.png'
 import Brand7 from '../images/brand-07.png'
 import Brand8 from '../images/brand-08.png'
+import Wish from '../images/wish.svg'
+import Watch2 from '../images/watch2.avif'
+import ProdCompare from '../images/prodcompare.svg'
+import View from '../images/view.svg'
+import AddToCart from '../images/add-cart.svg'
 import { Services } from '../utils/Data';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllBlogs } from '../features/blogs/blogsSlice';
+import { addToWishlist, getAllProducts } from '../features/products/productsSlice';
+
 
 const Home = () => {
 
@@ -36,9 +44,16 @@ const Home = () => {
 
     useEffect(() => {
         dispatch(getAllBlogs())
+        dispatch(getAllProducts())
     }, []);
 
     const blogState = useSelector((state) => state.blog.blogs)
+    const productState = useSelector((state) => state.product.products)
+    console.log(productState)
+
+    const addToWish = (id) => {
+        dispatch(addToWishlist(id))
+    }
 
     return (
         <>
@@ -242,10 +257,18 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="row">
-                    <SpecialProduct />
-                    <SpecialProduct />
-                    <SpecialProduct />
-                    <SpecialProduct />
+                    {productState?.filter(item => item.tags === 'special')?.map((item, index) => (
+                        <SpecialProduct
+                            key={index}
+                            image={item?.images[0]?.url}
+                            brand={item?.brand}
+                            title={item?.title}
+                            rating={Number(item?.totalrating)}
+                            price={item?.price}
+                            quantity={item?.quantity}
+                            sold={item?.sold}
+                        />
+                    ))}
                 </div>
             </Container>
             <Container class1='popular-wrapper home-wrapper-2 py-5'>
@@ -257,10 +280,48 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="row">
-                    <ProductCard />
-                    <ProductCard />
-                    <ProductCard />
-                    <ProductCard />
+                    {productState?.map((item, index) => {
+                        return (
+                            <div className="col-3" key={index}>
+                                <Link to='' className="product-card position-relative">
+                                    <div className="wishlist-icon position-absolute">
+                                        <button className='border-0 bg-transparent' onClick={() => addToWish(item?._id)}>
+                                            <img src={Wish} alt="wishlist" />
+                                        </button>
+                                    </div>
+                                    <div className="product-image">
+                                        <img src={item?.images[0]?.url} className='img-fluid' alt="product" />
+                                        <img src={Watch2} className='img-fluid' alt="product" />
+                                    </div>
+                                    <div className="product-details">
+                                        <h6 className="brand">
+                                            {item?.brand}
+                                        </h6>
+                                        <h5 className="product-title">
+                                            {item?.title}
+                                        </h5>
+                                        <ReactStars count={5} size={24} value={Number(item?.totalrating)} edit={false} activeColor="#ffd700" />
+                                        <p className="price">
+                                            ${item?.price}
+                                        </p>
+                                    </div>
+                                    <div className="action-bar position-absolute">
+                                        <div className="d-flex flex-column gap-15">
+                                            <button className='border-0 bg-transparent'>
+                                                <img src={ProdCompare} alt="compare" />
+                                            </button>
+                                            <button className='border-0 bg-transparent'>
+                                                <img src={View} alt="view" />
+                                            </button>
+                                            <button className='border-0 bg-transparent'>
+                                                <img src={AddToCart} alt="add-to-cart" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </Link>
+                            </div>
+                        )
+                    })}
                 </div>
             </Container>
             <Container class1='marquee-wrapper home-wrapper-2 py-5'>

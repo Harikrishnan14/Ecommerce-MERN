@@ -7,7 +7,7 @@ import Watch2 from '../images/watch2.avif'
 import ProdCompare from '../images/prodcompare.svg'
 import View from '../images/view.svg'
 import AddToCart from '../images/add-cart.svg'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addToWishlist } from '../features/products/productsSlice';
 
 const ProductCard = (props) => {
@@ -20,9 +20,6 @@ const ProductCard = (props) => {
     const addToWish = (id) => {
         dispatch(addToWishlist(id))
     }
-
-    const productState = useSelector((state) => state)
-    console.log(productState)
 
     return (
         <>
@@ -45,7 +42,7 @@ const ProductCard = (props) => {
                             <h5 className="product-title">
                                 {item?.title}
                             </h5>
-                            <ReactStars count={5} size={24} value={item?.totalrating.toString()} edit={false} activeColor="#ffd700" />
+                            <ReactStars count={5} size={24} value={Number(item?.totalrating)} edit={false} activeColor="#ffd700" />
                             <p className={`description ${grid === 12 ? "d-block" : "d-none"}`} dangerouslySetInnerHTML={{ __html: item?.description }}>
                             </p>
                             <p className="price">
