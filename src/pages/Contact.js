@@ -29,6 +29,7 @@ const Contact = () => {
         validationSchema: contactSchema,
         onSubmit: values => {
             dispatch(postAQuery(values))
+            formik.resetForm()
         },
     });
 
