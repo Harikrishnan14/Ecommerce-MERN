@@ -5,9 +5,7 @@ import Watch from '../images/watch.jpg'
 
 const SpecialProduct = (props) => {
 
-    const { image, brand, title, rating, price, quantity, sold } = props
-
-    console.log('qty', quantity, 'sold', sold, 'val', (quantity / (quantity + sold)) * 100);
+    const { id, image, brand, title, rating, price, quantity, sold } = props
 
     return (
         <div className='col-6 mb-3'>
@@ -47,7 +45,7 @@ const SpecialProduct = (props) => {
                                 ></div>
                             </div>
                         </div>
-                        <Link className='button'>Add to Cart</Link>
+                        <Link className='button' to={`/product/${id}`}>View Product</Link>
                     </div>
                 </div>
             </div>

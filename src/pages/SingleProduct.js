@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import MetaTags from '../components/MetaTags'
 import BreadCrumb from '../components/BreadCrumb'
 import ProductCard from '../components/ProductCard';
@@ -9,11 +9,25 @@ import { IoShuffle } from "react-icons/io5";
 import { AiOutlineHeart } from "react-icons/ai";
 import { IoIosLink } from "react-icons/io";
 import Container from '../components/Container';
+import { useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAProduct } from '../features/products/productsSlice';
 
 const SingleProduct = () => {
 
-    // eslint-disable-next-line 
+    const dispatch = useDispatch()
+    const location = useLocation()
     const [orderedProduct, setOrderedProduct] = useState(true);
+
+    const productId = location.pathname.split('/')[2]
+
+    useEffect(() => {
+        dispatch(getAProduct(productId))
+    }, [])
+
+    const productState = useSelector((state) => state.product.product)
+    console.log(productState);
+    
 
     const props = {
         width: 400,
@@ -62,12 +76,12 @@ const SingleProduct = () => {
                     <div className="col-6">
                         <div className="main-product-details">
                             <div className='border-bottom'>
-                                <h3 className='title'>APPLE Watch Series 2 – 42 Mm Stainless Steel Case</h3>
+                                <h3 className='title'>{productState?.title}</h3>
                             </div>
                             <div className="border-bottom py-3">
-                                <p className="price">$100</p>
+                                <p className="price">${productState?.price}</p>
                                 <div className='d-flex align-items-center gap-10'>
-                                    <ReactStars count={5} size={24} value={3} edit={false} activeColor="#ffd700" />
+                                    <ReactStars count={5} size={24} value={Number(productState?.totalrating)} edit={false} activeColor="#ffd700" />
                                     <p className='mb-0 t-review'>(2 reviews)</p>
                                 </div>
                                 <a className='review-btn' href="#review">Write a Review</a>
@@ -79,15 +93,15 @@ const SingleProduct = () => {
                                 </div>
                                 <div className="d-flex align-items-center gap-10 my-2">
                                     <h3 className='product-heading'>Brand :</h3>
-                                    <p className='product-data'>Apple</p>
+                                    <p className='product-data'>{productState?.brand}</p>
                                 </div>
                                 <div className="d-flex align-items-center gap-10 my-2">
                                     <h3 className='product-heading'>Categories :</h3>
-                                    <p className='product-data'>SmartWatch, Watch</p>
+                                    <p className='product-data'>{productState?.category}</p>
                                 </div>
                                 <div className="d-flex align-items-center gap-10 my-2">
                                     <h3 className='product-heading'>Tags :</h3>
-                                    <p className='product-data'>Apple, Watch Series 7</p>
+                                    <p className='product-data'>{productState?.tags}</p>
                                 </div>
                                 <div className="d-flex align-items-center gap-10 my-2">
                                     <h3 className='product-heading'>Availability :</h3>
@@ -131,7 +145,7 @@ const SingleProduct = () => {
                                         We ship all US domestic orders within <br /> 5-10 business days!</p>
                                 </div>
                                 <div className="d-flex align-items-center gap-15 my-3">
-                                    <a href="javascript:void(0)" onClick={() => copyToClipboard("https://media.wired.com/photos/6511aab1189c419c40374c92/1:1/w_1358,h_1358,c_limit/Apple-Watch-Ultra-2-Alt-Gear.jpg")} style={{ backgroundColor: "#c6c6c6", color: "white", padding: "8px", borderRadius: "10px" }} >
+                                    <a href="javascript:void(0)" onClick={() => copyToClipboard(window.location.href)} style={{ backgroundColor: "#c6c6c6", color: "white", padding: "8px", borderRadius: "10px" }} >
                                         <IoIosLink className='fs-6 me-1' />Copy Link
                                     </a>
                                 </div>
@@ -145,11 +159,11 @@ const SingleProduct = () => {
                     <div className="col-12">
                         <h4>Description</h4>
                         <div className="description-inner-wrapper">
-                            <p className='mb-0'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt nisi quos eius animi temporibus, totam itaque assumenda sed earum voluptatibus voluptas vitae neque quae modi. Velit, quod. Eveniet, inventore veniam?</p>
+                            <p className='mb-0' dangerouslySetInnerHTML={{ __html: productState?.description }}></p>
                         </div>
                     </div>
                 </div>
-            </Container>
+            </Container >
             <Container id='review' class1='reviews-wrapper home-wrapper-2'>
                 <div className="row">
                     <div className="col-12">
@@ -206,7 +220,7 @@ const SingleProduct = () => {
                     <ProductCard />
                 </div>
             </Container>
-        </div>
+        </div >
     )
 }
 

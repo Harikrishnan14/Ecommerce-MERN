@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactStars from "react-rating-stars-component";
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Wish from '../images/wish.svg'
 import Watch from '../images/watch.jpg'
 import Watch2 from '../images/watch2.avif'
@@ -16,6 +16,7 @@ const ProductCard = (props) => {
 
     let location = useLocation()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const addToWish = (id) => {
         dispatch(addToWishlist(id))
@@ -25,7 +26,7 @@ const ProductCard = (props) => {
         <>
             {data?.map((item, index) => (
                 <div className={`${location.pathname === "/store" ? `gr-${grid}` : "col-3"}`} key={index}>
-                    <Link to='/product/:id' className="product-card position-relative">
+                    <div className="product-card position-relative">
                         <div className="wishlist-icon position-absolute">
                             <button className='border-0 bg-transparent' onClick={() => addToWish(item?._id)}>
                                 <img src={Wish} alt="wishlist" />
@@ -54,7 +55,7 @@ const ProductCard = (props) => {
                                 <button className='border-0 bg-transparent'>
                                     <img src={ProdCompare} alt="compare" />
                                 </button>
-                                <button className='border-0 bg-transparent'>
+                                <button className='border-0 bg-transparent' onClick={() => navigate(`/product/${item?._id}`)}>
                                     <img src={View} alt="view" />
                                 </button>
                                 <button className='border-0 bg-transparent'>
@@ -62,7 +63,7 @@ const ProductCard = (props) => {
                                 </button>
                             </div>
                         </div>
-                    </Link>
+                    </div>
                 </div>
             ))}
         </>
