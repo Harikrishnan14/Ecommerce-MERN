@@ -27,13 +27,13 @@ const SingleProduct = () => {
 
     const productState = useSelector((state) => state.product.product)
     console.log(productState);
-    
+
 
     const props = {
         width: 400,
         height: 600,
         zoomWidth: 600,
-        img: "https://media.wired.com/photos/6511aab1189c419c40374c92/1:1/w_1358,h_1358,c_limit/Apple-Watch-Ultra-2-Alt-Gear.jpg"
+        img: productState?.images[0]?.url ? productState?.images[0]?.url : "https://media.wired.com/photos/6511aab1189c419c40374c92/1:1/w_1358,h_1358,c_limit/Apple-Watch-Ultra-2-Alt-Gear.jpg"
     };
 
     const copyToClipboard = (text) => {
@@ -59,18 +59,11 @@ const SingleProduct = () => {
                             </div>
                         </div>
                         <div className="other-product-images d-flex justify-content-between flex-wrap gap-15 py-4">
-                            <div>
-                                <img src="https://media.wired.com/photos/6511aab1189c419c40374c92/1:1/w_1358,h_1358,c_limit/Apple-Watch-Ultra-2-Alt-Gear.jpg" alt="" className='img-fluid' />
-                            </div>
-                            <div>
-                                <img src="https://media.wired.com/photos/6511aab1189c419c40374c92/1:1/w_1358,h_1358,c_limit/Apple-Watch-Ultra-2-Alt-Gear.jpg" alt="" className='img-fluid' />
-                            </div>
-                            <div>
-                                <img src="https://media.wired.com/photos/6511aab1189c419c40374c92/1:1/w_1358,h_1358,c_limit/Apple-Watch-Ultra-2-Alt-Gear.jpg" alt="" className='img-fluid' />
-                            </div>
-                            <div>
-                                <img src="https://media.wired.com/photos/6511aab1189c419c40374c92/1:1/w_1358,h_1358,c_limit/Apple-Watch-Ultra-2-Alt-Gear.jpg" alt="" className='img-fluid' />
-                            </div>
+                            {productState?.images.map((item, index) => (
+                                <div>
+                                    <img src={item?.url} alt="" className='img-fluid' />
+                                </div>
+                            ))}
                         </div>
                     </div>
                     <div className="col-6">
