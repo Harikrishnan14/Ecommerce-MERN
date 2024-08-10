@@ -274,7 +274,7 @@ const getWishlist = asyncHandler(async (req, res) => {
 })
 
 const userCart = asyncHandler(async (req, res) => {
-    const { cart } = req.body
+    const { productID, color, quanity } = req.body
     const { _id } = req.user
     validateMongoID(_id)
     try {
