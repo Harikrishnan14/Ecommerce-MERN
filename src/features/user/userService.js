@@ -31,12 +31,20 @@ const addToCart = async (cartData) => {
     }
 }
 
+const getCart = async () => {
+    const response = await axios.get(`${baseURL}user/cart`, config);
+    if (response.data) {
+        return response.data;
+    }
+}
+
 
 const userService = {
     register,
     login,
     getUserWishlist,
-    addToCart
+    addToCart,
+    getCart
 }
 
 

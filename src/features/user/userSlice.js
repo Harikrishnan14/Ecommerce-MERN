@@ -44,6 +44,14 @@ export const addProdToCart = createAsyncThunk('user/cart', async (cartData, thun
     }
 })
 
+export const getUserCart = createAsyncThunk('user/get-cart', async (thunkAPI) => {
+    try {
+        return await userService.getCart()
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+    }
+})
+
 export const userSlice = createSlice({
     name: "auth",
     initialState: initialState,
@@ -125,6 +133,21 @@ export const userSlice = createSlice({
                 if (state.isError === true) {
                     toast.error("Oops, something went wrong!")
                 }
+            })
+            .addCase(getUserCart.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getUserCart.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.message = "success"
+                state.userCart = action.payload
+            })
+            .addCase(getUserCart.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.isSuccess = false
+                state.message = action.error
             })
     }
 })
