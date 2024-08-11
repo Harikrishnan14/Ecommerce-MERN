@@ -302,6 +302,20 @@ const getUserCart = asyncHandler(async (req, res) => {
     }
 })
 
+const removeProductFromCart = asyncHandler(async (req, res) => {
+    const { _id } = req.user
+    const { cartItemId } = req.params
+    console.log(cartItemId);
+    
+    validateMongoID(_id)
+    try {
+        const deletedProdFromCart = await Cart.deleteOne({ userID: _id, _id: cartItemId })
+        res.json(deletedProdFromCart)
+    } catch (error) {
+        throw new Error(error)
+    }
+})
+
 const emptyCart = asyncHandler(async (req, res) => {
     const { _id } = req.user
     validateMongoID(_id)
@@ -447,5 +461,6 @@ module.exports = {
     getOrders,
     getAllOrders,
     getOrderByUserId,
-    updateOrderStatus
+    updateOrderStatus,
+    removeProductFromCart
 }

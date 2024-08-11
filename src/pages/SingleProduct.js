@@ -9,27 +9,31 @@ import { IoShuffle } from "react-icons/io5";
 import { AiOutlineHeart } from "react-icons/ai";
 import { IoIosLink } from "react-icons/io";
 import Container from '../components/Container';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAProduct } from '../features/products/productsSlice';
-import { addProdToCart } from '../features/user/userSlice';
+import { addProdToCart, getUserCart } from '../features/user/userSlice';
 import { toast } from "react-toastify";
 
 const SingleProduct = () => {
 
     const dispatch = useDispatch()
     const location = useLocation()
+    const navigate = useNavigate()
     const [orderedProduct, setOrderedProduct] = useState(true);
     const [color, setColor] = useState(null);
     const [quantity, setQuantity] = useState(1);
+    const [alreadyInCart, setAlreadyInCart] = useState(false);
 
     const productId = location.pathname.split('/')[2]
 
     useEffect(() => {
         dispatch(getAProduct(productId))
+        dispatch(getUserCart())
     }, [])
 
     const productState = useSelector((state) => state.product.product)
+    const cartState = useSelector((state) => state.auth.userCart)
 
     const props = {
         width: 400,
@@ -58,8 +62,17 @@ const SingleProduct = () => {
                 color: color,
                 price: productState?.price
             }))
+            navigate('/cart')
         }
     }
+
+    useEffect(() => {
+        for (let index = 0; index < cartState?.length; index++) {
+            if (productId === cartState[index]?.productID?._id) {
+                setAlreadyInCart(true)
+            }
+        }
+    }, [])
 
     return (
         <div>
@@ -125,18 +138,24 @@ const SingleProduct = () => {
                                         <span className="badge border border-1 bg-white text-dark border-secondary">XXL</span>
                                     </div>
                                 </div>
-                                <div className="d-flex flex-column gap-10 mt-2 mb-3">
-                                    <h3 className='product-heading'>Color :</h3>
-                                    <Color colorData={productState?.color} setColor={setColor} />
-                                </div>
-                                <div className="d-flex align-items-center flex-row gap-15 mt-2 mb-3">
-                                    <h3 className='product-heading'>Quantity :</h3>
-                                    <div className=''>
-                                        <input type="number" value={quantity} min={1} max={10} style={{ width: "70px" }} className='form-control' onChange={(e) => setQuantity(e.target.value)} />
+                                {alreadyInCart === false && <>
+                                    <div className="d-flex flex-column gap-10 mt-2 mb-3">
+                                        <h3 className='product-heading'>Color :</h3>
+                                        <Color colorData={productState?.color} setColor={setColor} />
                                     </div>
-                                    <div className='d-flex align-items-center gap-30 ms-5'>
-                                        <button className='button border-0' onClick={addToCart}>Add to Cart</button>
-                                        <button className='button signup border-0'>Buy Now</button>
+                                </>}
+                                <div className="d-flex align-items-center flex-row gap-15 mt-2 mb-3">
+                                    {alreadyInCart === false && <>
+                                        <h3 className='product-heading'>Quantity :</h3>
+                                        <div className=''>
+                                            <input type="number" value={quantity} min={1} max={10} style={{ width: "70px" }} className='form-control' onChange={(e) => setQuantity(e.target.value)} />
+                                        </div>
+                                    </>}
+                                    <div className={`${alreadyInCart ? "ms-0" : "ms-5"} d-flex align-items-center gap-30`}>
+                                        <button className='button border-0' onClick={() => { alreadyInCart ? navigate('/cart') : addToCart() }}>
+                                            {alreadyInCart ? "Go to Cart" : "Add to Cart"}
+                                        </button>
+                                        {!alreadyInCart && <button className='button signup border-0'>Buy Now</button>}
                                     </div>
                                 </div>
                                 <div className="d-flex align-items-center gap-30 pb-3">

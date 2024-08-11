@@ -6,7 +6,7 @@ import { MdDelete } from "react-icons/md";
 import { Link } from 'react-router-dom';
 import Container from '../components/Container';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserCart } from '../features/user/userSlice';
+import { getUserCart, removeFromCart } from '../features/user/userSlice';
 
 const Cart = () => {
 
@@ -17,6 +17,13 @@ const Cart = () => {
     }, [])
 
     const cartState = useSelector((state) => state.auth.userCart)
+
+    const deleteFromCart = (id) => {
+        dispatch(removeFromCart(id))
+        setTimeout(() => {
+            dispatch(getUserCart())
+        }, 200);
+    }
 
     return (
         <div>
@@ -33,7 +40,7 @@ const Cart = () => {
                         </div>
 
                         {cartState?.map((item, index) => (
-                            <div className="cart-data d-flex justify-content-between align-items-center py-3 mb-2">
+                            <div className="cart-data d-flex justify-content-between align-items-center py-3 mb-2" key={index}>
                                 <div className='cart-col-1 d-flex align-items-center gap-15'>
                                     <div className='w-25'>
                                         <img src={item?.productID?.images[0]?.url} alt="Product" className='img-fluid' />
@@ -55,7 +62,7 @@ const Cart = () => {
                                         <input type="number" className='form-control' value={item?.quantity} min={1} max={10} defaultValue={1} />
                                     </div>
                                     <div>
-                                        <MdDelete className='text-danger fs-4' />
+                                        <MdDelete className='text-danger fs-4' onClick={() => deleteFromCart(item?._id)} />
                                     </div>
                                 </div>
                                 <div className='cart-col-4'>

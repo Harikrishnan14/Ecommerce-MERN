@@ -38,13 +38,21 @@ const getCart = async () => {
     }
 }
 
+const removeProductFromCart = async (cartItemId) => {
+    const response = await axios.delete(`${baseURL}user/remove-from-cart/${cartItemId}`, config);
+    if (response.data) {
+        return response.data;
+    }
+}
+
 
 const userService = {
     register,
     login,
     getUserWishlist,
     addToCart,
-    getCart
+    getCart,
+    removeProductFromCart
 }
 
 
