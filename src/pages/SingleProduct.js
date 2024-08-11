@@ -12,12 +12,16 @@ import Container from '../components/Container';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAProduct } from '../features/products/productsSlice';
+import { addProdToCart } from '../features/user/userSlice';
+import { toast } from "react-toastify";
 
 const SingleProduct = () => {
 
     const dispatch = useDispatch()
     const location = useLocation()
     const [orderedProduct, setOrderedProduct] = useState(true);
+    const [color, setColor] = useState(null);
+    const [quantity, setQuantity] = useState(1);
 
     const productId = location.pathname.split('/')[2]
 
@@ -26,8 +30,6 @@ const SingleProduct = () => {
     }, [])
 
     const productState = useSelector((state) => state.product.product)
-    console.log(productState);
-
 
     const props = {
         width: 400,
@@ -44,6 +46,19 @@ const SingleProduct = () => {
         textField.select()
         document.execCommand('copy')
         textField.remove()
+    }
+
+    const addToCart = () => {
+        if (color === null) {
+            toast.error("Please choose a color")
+        } else {
+            dispatch(addProdToCart({
+                productID: productState?._id,
+                quantity: Number(quantity),
+                color: color,
+                price: productState?.price
+            }))
+        }
     }
 
     return (
@@ -112,15 +127,15 @@ const SingleProduct = () => {
                                 </div>
                                 <div className="d-flex flex-column gap-10 mt-2 mb-3">
                                     <h3 className='product-heading'>Color :</h3>
-                                    <Color />
+                                    <Color colorData={productState?.color} setColor={setColor} />
                                 </div>
                                 <div className="d-flex align-items-center flex-row gap-15 mt-2 mb-3">
                                     <h3 className='product-heading'>Quantity :</h3>
                                     <div className=''>
-                                        <input type="number" defaultValue={1} min={1} max={10} style={{ width: "70px" }} className='form-control' />
+                                        <input type="number" value={quantity} min={1} max={10} style={{ width: "70px" }} className='form-control' onChange={(e) => setQuantity(e.target.value)} />
                                     </div>
                                     <div className='d-flex align-items-center gap-30 ms-5'>
-                                        <button className='button border-0'>Add to Cart</button>
+                                        <button className='button border-0' onClick={addToCart}>Add to Cart</button>
                                         <button className='button signup border-0'>Buy Now</button>
                                     </div>
                                 </div>
