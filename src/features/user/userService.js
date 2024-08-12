@@ -45,6 +45,12 @@ const removeProductFromCart = async (cartItemId) => {
     }
 }
 
+const updateProductFromCart = async (cartDetail) => {
+    const response = await axios.delete(`${baseURL}user/update-from-cart/${cartDetail.cartItemId}/${cartDetail.quantity}`, config);
+    if (response.data) {
+        return response.data;
+    }
+}
 
 const userService = {
     register,
@@ -52,7 +58,8 @@ const userService = {
     getUserWishlist,
     addToCart,
     getCart,
-    removeProductFromCart
+    removeProductFromCart,
+    updateProductFromCart
 }
 
 

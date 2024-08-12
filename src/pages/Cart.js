@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import MetaTags from '../components/MetaTags'
 import BreadCrumb from '../components/BreadCrumb'
 import Watch from '../images/watch.jpg'
@@ -6,11 +6,12 @@ import { MdDelete } from "react-icons/md";
 import { Link } from 'react-router-dom';
 import Container from '../components/Container';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserCart, removeFromCart } from '../features/user/userSlice';
+import { getUserCart, removeFromCart, updateCart } from '../features/user/userSlice';
 
 const Cart = () => {
 
     const dispatch = useDispatch()
+    const [prodUpdateDetails, setProdUpdateDetails] = useState(null)
 
     useEffect(() => {
         dispatch(getUserCart())
@@ -24,6 +25,15 @@ const Cart = () => {
             dispatch(getUserCart())
         }, 200);
     }
+
+    useEffect(() => {
+        if (prodUpdateDetails !== null) {
+            dispatch(updateCart({ cartItemId: prodUpdateDetails?.cartItemId, quantity: prodUpdateDetails?.quantity }))
+            setTimeout(() => {
+                dispatch(getUserCart())
+            }, 200);
+        }
+    }, [prodUpdateDetails])
 
     return (
         <div>
@@ -59,7 +69,15 @@ const Cart = () => {
                                 </div>
                                 <div className='cart-col-3 d-flex align-items-center gap-15'>
                                     <div>
-                                        <input type="number" className='form-control' value={item?.quantity} min={1} max={10} defaultValue={1} />
+                                        <input
+                                            type="number"
+                                            className='form-control'
+                                            value={prodUpdateDetails?.quantity ? prodUpdateDetails?.quantity : item?.quantity}
+                                            min={1}
+                                            max={10}
+                                            // defaultValue={1}
+                                            onChange={(e) => setProdUpdateDetails({ cartItemId: item?._id, quantity: e.target.value })}
+                                        />
                                     </div>
                                     <div>
                                         <MdDelete className='text-danger fs-4' onClick={() => deleteFromCart(item?._id)} />
