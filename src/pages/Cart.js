@@ -12,6 +12,7 @@ const Cart = () => {
 
     const dispatch = useDispatch()
     const [prodUpdateDetails, setProdUpdateDetails] = useState(null)
+    const [totalAmount, setTotalAmount] = useState(0)
 
     useEffect(() => {
         dispatch(getUserCart())
@@ -34,6 +35,15 @@ const Cart = () => {
             }, 200);
         }
     }, [prodUpdateDetails])
+
+    useEffect(() => {
+        let sum = 0
+        for (let index = 0; index < cartState?.length; index++) {
+            sum = sum + (Number(cartState[index]?.quantity) * cartState[index]?.price)
+            setTotalAmount(sum)
+        }
+    }, [cartState])
+
 
     return (
         <div>
@@ -90,14 +100,16 @@ const Cart = () => {
                         ))}
                     </div>
                     <div className="col-12 py-2 mt-4">
-                        <div className="d-flex justify-content-between align-items-baseline">
-                            <Link to='/store' className='button'>Continue Shopping</Link>
-                            <div className='d-flex flex-column align-items-end'>
-                                <h4>Subtotal: $399</h4>
-                                <p>Taxes and shipping calculated at checkout</p>
-                                <Link to='/checkout' className='button'>Checkout</Link>
+                        {(totalAmount !== 0 || totalAmount !== null) && (
+                            <div className="d-flex justify-content-between align-items-baseline">
+                                <Link to='/store' className='button'>Continue Shopping</Link>
+                                <div className='d-flex flex-column align-items-end'>
+                                    <h4>Subtotal: ${totalAmount}</h4>
+                                    <p>Taxes and shipping calculated at checkout</p>
+                                    <Link to='/checkout' className='button'>Checkout</Link>
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 </div>
             </Container >
