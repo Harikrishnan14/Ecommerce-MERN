@@ -28,6 +28,7 @@ const { registerUser,
     updatedProductQuantityFromCart
 } = require('../controllers/userController')
 const { authMiddleware, isAdmin } = require('../middlewares/authMiddleware')
+const { checkout, paymentVerification } = require('../controllers/paymentController')
 const router = express.Router()
 
 
@@ -49,6 +50,8 @@ router.get('/refresh', handleRefreshToken)
 router.get("/logout", logout);
 router.get('/wishlist', authMiddleware, getWishlist)
 router.get('/cart', authMiddleware, getUserCart)
+router.post('/order/checkout', authMiddleware, checkout)
+router.post('/order/payment-verification', authMiddleware, paymentVerification)
 router.get('/:id', authMiddleware, isAdmin, getUser)
 router.delete('/remove-from-cart/:cartItemId', authMiddleware, removeProductFromCart)
 router.delete('/update-from-cart/:cartItemId/:newQuantity', authMiddleware, updatedProductQuantityFromCart)

@@ -3,10 +3,14 @@ import { Link } from 'react-router-dom'
 import { IoIosArrowBack } from "react-icons/io";
 import Container from '../components/Container';
 import { useSelector } from 'react-redux';
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+import axios from 'axios';
 
 const Checkout = () => {
 
     const [totalAmount, setTotalAmount] = useState(0)
+    const [shippingInfo, setShippingInfo] = useState(null)
 
     const cartState = useSelector((state) => state.auth.userCart)
 
@@ -17,6 +21,98 @@ const Checkout = () => {
             setTotalAmount(sum)
         }
     }, [cartState])
+
+    const shippingSchema = yup.object({
+        firstName: yup.string().required("First Name is required"),
+        lastName: yup.string().required("Last Name is required"),
+        address: yup.string().required("Address is required"),
+        state: yup.string().required("State is required"),
+        city: yup.string().required("City is required"),
+        country: yup.string().required("Country is required"),
+        pincode: yup.number().required("Zip Code is required"),
+        other: yup.string(),
+    });
+
+    const formik = useFormik({
+        initialValues: {
+            firstName: "",
+            lastName: "",
+            address: "",
+            state: "",
+            city: "",
+            country: "",
+            pincode: "",
+            other: "",
+        },
+        validationSchema: shippingSchema,
+        onSubmit: values => {
+            checkoutHandler()
+        },
+    });
+
+    const loadScript = (src) => {
+        return new Promise((resolve) => {
+            const script = document.createElement("script")
+            script.src = src;
+            script.onload = () => {
+                resolve(true)
+            }
+            script.onerror = () => {
+                resolve(false)
+            }
+            document.body.appendChild(script)
+        })
+    }
+
+    const checkoutHandler = async () => {
+        const response = await loadScript("https://checkout.razorpay.com/vi/checkout.js")
+        if (!response) {
+            alert("Razorpay SDK failed to load!")
+            return;
+        }
+        const result = await axios.post("http://localhost:5000/api/user/order/checkout")
+        if (!result) {
+            alert("Something went wrong")
+            return;
+        }
+
+        const { amount, id: order_id, currency } = result.data
+
+        const options = {
+            key: "rzp_test_FJAogaQsdBhrvo", // Enter the Key ID generated from the Dashboard
+            amount: amount.toString(),
+            currency: currency,
+            name: "ShopNest",
+            description: "Test Transaction",
+            order_id: order_id,
+            handler: async function (response) {
+                const data = {
+                    orderCreationId: order_id,
+                    razorpayPaymentId: response.razorpay_payment_id,
+                    razorpayOrderId: response.razorpay_order_id,
+                    razorpaySignature: response.razorpay_signature,
+                };
+
+                const result = await axios.post("http://localhost:5000/api/user/order/payment-verification", data);
+
+                alert(result);
+            },
+            prefill: {
+                name: "ShopNest",
+                email: "shopnest@example.com",
+                contact: "9999999999",
+            },
+            notes: {
+                address: "ShopNest Corporate Office",
+            },
+            theme: {
+                color: "#61dafb",
+            },
+        };
+
+        const paymentObject = new window.Razorpay(options);
+        paymentObject.open();
+    }
 
     return (
         <div>
@@ -47,34 +143,116 @@ const Checkout = () => {
                             <h4 className="title total">Contact Information</h4>
                             <p className="user-details total">Test User (testuser@gmail.com)</p>
                             <h4 className='mb-3'>Shipping Address</h4>
-                            <form action="" className='d-flex flex-wrap justify-content-between gap-15'>
+                            <form action="" onSubmit={formik.handleSubmit} className='d-flex flex-wrap justify-content-between gap-15'>
                                 <div className='w-100'>
-                                    <select name="" id="" className='form-control form-select'>
+                                    <select
+                                        name="country"
+                                        id=""
+                                        value={formik.values.country}
+                                        onChange={formik.handleChange("country")}
+                                        onBlur={formik.handleBlur("country")}
+                                        className='form-control form-select'
+                                    >
                                         <option value="" selected disabled>Select Country</option>
+                                        <option value="India">India</option>
                                     </select>
+                                    <div className="error ms-2 my-1">
+                                        {formik.touched.country && formik.errors.country}
+                                    </div>
                                 </div>
                                 <div className='flex-grow-1'>
-                                    <input type="text" placeholder='First Name' className='form-control' />
+                                    <input
+                                        type="text"
+                                        placeholder='First Name'
+                                        className='form-control'
+                                        value={formik.values.firstName}
+                                        onChange={formik.handleChange("firstName")}
+                                        onBlur={formik.handleBlur("firstName")}
+                                    />
+                                    <div className="error ms-2 my-1">
+                                        {formik.touched.firstName && formik.errors.firstName}
+                                    </div>
                                 </div>
                                 <div className='flex-grow-1'>
-                                    <input type="text" placeholder='Last Name' className='form-control' />
+                                    <input
+                                        type="text"
+                                        placeholder='Last Name'
+                                        className='form-control'
+                                        value={formik.values.lastName}
+                                        onChange={formik.handleChange("lastName")}
+                                        onBlur={formik.handleBlur("lastName")}
+                                    />
+                                    <div className="error ms-2 my-1">
+                                        {formik.touched.lastName && formik.errors.lastName}
+                                    </div>
                                 </div>
                                 <div className='w-100'>
-                                    <input type="text" placeholder='Address' className='form-control' />
+                                    <input
+                                        type="text"
+                                        placeholder='Address'
+                                        className='form-control'
+                                        value={formik.values.address}
+                                        onChange={formik.handleChange("address")}
+                                        onBlur={formik.handleBlur("address")}
+                                    />
+                                    <div className="error ms-2 my-1">
+                                        {formik.touched.address && formik.errors.address}
+                                    </div>
                                 </div>
                                 <div className='w-100'>
-                                    <input type="text" placeholder='Apartment, Suite, etc.' className='form-control' />
+                                    <input
+                                        type="text"
+                                        placeholder='Apartment, Suite, etc.'
+                                        className='form-control'
+                                        value={formik.values.other}
+                                        onChange={formik.handleChange("other")}
+                                        onBlur={formik.handleBlur("other")}
+                                    />
+                                    <div className="error ms-2 my-1">
+                                        {formik.touched.other && formik.errors.other}
+                                    </div>
                                 </div>
                                 <div className='flex-grow-1'>
-                                    <input type="text" placeholder='City' className='form-control' />
+                                    <input
+                                        type="text"
+                                        placeholder='City'
+                                        className='form-control'
+                                        value={formik.values.city}
+                                        onChange={formik.handleChange("city")}
+                                        onBlur={formik.handleBlur("city")}
+                                    />
+                                    <div className="error ms-2 my-1">
+                                        {formik.touched.city && formik.errors.city}
+                                    </div>
                                 </div>
                                 <div className='flex-grow-1'>
-                                    <select name="" id="" className='form-control form-select'>
+                                    <select
+                                        name="state"
+                                        id=""
+                                        className='form-control form-select'
+                                        value={formik.values.state}
+                                        onChange={formik.handleChange("state")}
+                                        onBlur={formik.handleBlur("state")}
+                                    >
                                         <option value="" selected disabled>Select State</option>
+                                        <option value="Kerala">Kerala</option>
                                     </select>
+                                    <div className="error ms-2 my-1">
+                                        {formik.touched.state && formik.errors.state}
+                                    </div>
                                 </div>
                                 <div className='flex-grow-1'>
-                                    <input type="text" placeholder='Zip Code' className='form-control' />
+                                    <input
+                                        type="text"
+                                        placeholder='Zip Code'
+                                        className='form-control'
+                                        value={formik.values.pincode}
+                                        onChange={formik.handleChange("pincode")}
+                                        onBlur={formik.handleBlur("pincode")}
+                                    />
+                                    <div className="error ms-2 my-1">
+                                        {formik.touched.pincode && formik.errors.pincode}
+                                    </div>
                                 </div>
                                 <div className="w-100 mt-3">
                                     <div className="d-flex align-items-center justify-content-between">
@@ -83,6 +261,7 @@ const Checkout = () => {
                                             Return to Cart
                                         </Link>
                                         <Link to='/' className='button'>Continue to shipping</Link>
+                                        <button className='button' type='submit'>Place Order</button>
                                     </div>
                                 </div>
                             </form>
